@@ -248,6 +248,51 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
+		<!-- Quiz Button -->
+<button onclick="showQuiz()" style="padding:10px 20px; font-size:16px;">
+  Take Quiz
+</button>
+
+<!-- Quiz Popup -->
+<div id="quizPopup" style="display:none; position:fixed; top:20%; left:50%; transform:translateX(-50%);
+  background:white; padding:20px; border:2px solid #333; z-index:1000; width:300px;">
+  
+  <h3>Quick Quiz</h3>
+  <p>What is 2 + 2?</p>
+  
+  <button onclick="checkAnswer(4)">4</button>
+  <button onclick="checkAnswer(5)">5</button>
+  <button onclick="checkAnswer(22)">22</button>
+  
+  <p id="quizResult" style="margin-top:15px; font-weight:bold;"></p>
+  
+  <button onclick="closeQuiz()" style="margin-top:10px;">Close</button>
+</div>
+
+<script>
+function showQuiz() {
+  document.getElementById('quizPopup').style.display = 'block';
+}
+
+function closeQuiz() {
+  document.getElementById('quizPopup').style.display = 'none';
+  document.getElementById('quizResult').innerText = '';
+}
+
+function checkAnswer(answer) {
+  const result = document.getElementById('quizResult');
+  if (answer === 4) {
+    result.innerText = "✅ Correct!";
+    result.style.color = "green";
+  } else {
+    result.innerText = "❌ Try again!";
+    result.style.color = "red";
+  }
+}
+</script>
+
+		
 	</body>
 
 </html>
+

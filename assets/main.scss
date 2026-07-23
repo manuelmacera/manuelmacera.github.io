@@ -59,12 +59,22 @@ a:hover {
   border-top: 1px solid var(--border);
 }
 
-/* Wider content column */
+/* Page shell fills most of the viewport, scaling with the window */
 .wrapper,
 .page-content .wrapper,
 .site-header .wrapper,
 .site-footer .wrapper {
-  max-width: 1100px;
+  max-width: min(1400px, 92%);
+}
+
+/* But keep actual reading content (prose, paper cards) at a comfortable,
+   compact measure so paragraphs and the paper snapshots don't stretch
+   out across the whole wide page shell. Left-aligned with the headings,
+   just narrower on the right so lines/cards don't sprawl. */
+.post-content > p,
+.post-content > ul,
+.paper-list {
+  max-width: 720px;
 }
 
 /* Hero header on Home */
@@ -168,7 +178,7 @@ a:hover {
 }
 
 .paper-snapshot {
-  width: 200px;
+  width: 140px;
   flex-shrink: 0;
   border: 1px solid var(--border);
   border-radius: 4px;

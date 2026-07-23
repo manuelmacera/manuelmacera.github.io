@@ -14,6 +14,5 @@ I am an economist working on macroeconomics, inequality, and demographic change.
 
 ### Contact
 
-- **Email:** [your email here]
-- **Phone:** [your phone here]
+- **Email:** manuelmacera@gmail.com
 - **Address:** Universidad Torcuato Di Tella, Buenos Aires, Argentina

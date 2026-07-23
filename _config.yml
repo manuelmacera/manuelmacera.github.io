@@ -1,0 +1,19 @@
+title: Manuel Macera
+description: Economics — Universidad Torcuato Di Tella
+email:
+
+theme: minima
+minima:
+  skin: classic
+  social_links: []
+
+header_pages:
+  - research.md
+  - teaching.md
+  - cv.md
+  - demographics.md
+
+plugins:
+  - jekyll-feed
+
+# Not published yet — pushing to GitHub is a separate, later step.

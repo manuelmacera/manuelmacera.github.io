@@ -1,0 +1,68 @@
+---
+---
+
+@import "minima";
+
+:root {
+  --accent: #7a1f2b;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.site-header {
+  border-top: 4px solid var(--accent);
+  border-bottom: 1px solid $grey-color-light;
+}
+
+.site-title,
+.site-title:visited {
+  font-weight: 700;
+}
+
+.site-nav .page-link {
+  color: $text-color;
+}
+
+.site-nav .page-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: darken(#7a1f2b, 10%);
+}
+
+.headshot {
+  float: right;
+  width: 180px;
+  border-radius: 6px;
+  margin: 0 0 1em 2em;
+}
+
+.page-content .wrapper {
+  max-width: 740px;
+}
+
+.pub-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.pub-list li {
+  margin-bottom: 1.4em;
+}
+
+.pub-list .pub-title {
+  font-weight: 600;
+}
+
+.pub-list .pub-meta {
+  color: $grey-color-dark;
+  font-size: 0.95em;
+}

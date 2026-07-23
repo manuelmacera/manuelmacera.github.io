@@ -1,0 +1,48 @@
+- title: Covid-19 in Unequal Societies
+  venue: Journal of Economic Dynamics and Control, 2022
+  coauthors: with Constantino Hevia and Andy Neumeyer
+  pdf: hmn2022.pdf
+  snapshot: hmn2022.png
+  abstract: >
+    We document the heterogeneous effect of covid-19 on health and economic outcomes across
+    socioeconomic strata in Bogotá. We assess its distributional impact and evaluate policy
+    counterfactuals in a heterogeneous-agent quantitative dynamic general equilibrium model
+    intertwined with a behavioral epidemiological model.
+
+- title: Inequality and Technological Change
+  venue: Quantitative Economics, 2024
+  coauthors: with Hitoshi Tsujiyama
+  pdf: inequality_technological_change.pdf
+  snapshot: inequality_technological_change.png
+  abstract: >
+    We study how technological change affects between- and within-education-group inequality
+    in the United States, using a model with heterogeneous workers and firms in which the
+    demand for skills is characterized by firms' recruiting behavior. We find that technological
+    change in labor productivity — higher returns to skill — is the main driver of rising
+    inequality, while higher firm productivity dispersion plays a smaller role.
+
+- title: Optimal Climate Policy with Demographic Transitions
+  venue: The Economic Journal, 2025
+  coauthors: with Elisa Belfiori (UTDT)
+  pdf: BM2025_Climate_Demographics.pdf
+  snapshot: BM2025_Climate_Demographics.png
+  abstract: >
+    We build an overlapping-generations climate-economy model with a rich demographic
+    structure, allowing population growth and survival probabilities to vary over time. The
+    planner's problem can be recast as a representative-agent model with a time-varying social
+    discount factor that reflects demographic dynamics — as the population ages, society behaves
+    as if more impatient. The social cost of carbon rises significantly under medium- and
+    high-fertility scenarios, driven by larger populations, partially offset by higher discounting
+    in ageing societies.
+
+- title: Demographic Changes and Social Discounting
+  venue: Economics Letters, 2025
+  coauthors: with Elisa Belfiori (UTDT)
+  pdf: EL_Social_Discounting.pdf
+  snapshot: EL_Social_Discounting.png
+  abstract: >
+    We study social discounting under demographic transitions, showing how changes in
+    population growth and age structure give rise to a "demographic premium" — the spread
+    between the discount rate during a transition and in a stationary environment. The premium
+    is sizable and larger for less developed, low-income countries, suggesting long-term policy
+    decisions requiring international cooperation are especially prone to disagreement.

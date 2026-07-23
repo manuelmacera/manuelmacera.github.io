@@ -4,11 +4,13 @@ title: Home
 permalink: /
 ---
 
-<img src="{{ '/assets/images/headshot.jpg' | relative_url }}" alt="Manuel Macera" class="headshot">
-
-## Manuel Macera
-
-Department of Economics, Universidad Torcuato Di Tella (UTDT)
+<div class="hero">
+  <img src="{{ '/assets/images/headshot.jpg' | relative_url }}" alt="Manuel Macera" class="headshot">
+  <div class="hero-text">
+    <h1>Manuel Macera</h1>
+    <p>Department of Economics, Universidad Torcuato Di Tella (UTDT)</p>
+  </div>
+</div>
 
 I am an economist working on macroeconomics, inequality, and demographic change. See the [Research](/research.html) and [Teaching](/teaching.html) pages for more, or my [CV](/cv.html) for full details.
 

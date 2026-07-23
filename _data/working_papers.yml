@@ -1,0 +1,56 @@
+- title: "Climate Inequality: Carbon Capture for Redistribution"
+  venue: CESifo WP 11239
+  coauthors: with Elisa Belfiori (UTDT)
+  pdf: cesifo1_wp11239.pdf
+  snapshot: cesifo1_wp11239.png
+  abstract: >
+    We study optimal climate policy in a global economy where regions differ in wealth and
+    climate vulnerability. The model with heterogeneity can be cast into a representative-region
+    economy with a different discount factor and damage function, giving a simple rule to
+    account for inequality in climate policy design. Wealthier regions should bear more
+    responsibility for carbon capture; carbon capture also serves as a redistribution tool
+    when direct transfers across regions are unfeasible.
+
+- title: Policy during Hyperinflations
+  venue: ""
+  coauthors: with Albert Marcet and Juan Pablo Nicolini
+  pdf: policy_during_hypers.pdf
+  snapshot: policy_during_hypers.png
+  abstract: >
+    We perform policy analysis in a macroeconomic model in which agents do not have rational
+    expectations, using hyperinflation episodes as a laboratory. We focus on policies that fix
+    the exchange rate to reduce inflation and stabilize the economy, computing the external
+    financing requirements and welfare gains of alternative policies. Early and fast
+    interventions are preferable on welfare grounds but require more access to external funds.
+
+- title: Demographic Transitions and Fiscal Imbalances in Latin America
+  venue: ""
+  coauthors: with Andy Neumeyer
+  pdf: null
+  snapshot: null
+  broken: true
+  abstract: ""
+
+- title: On the Risk of Leaving the Euro
+  venue: FRB Minneapolis WP 760
+  coauthors: with Albert Marcet and Juan Pablo Nicolini
+  pdf: wp760.pdf
+  snapshot: wp760.png
+  abstract: >
+    Following the sovereign debt crisis of 2012, some southern European countries debated
+    proposals to leave the Euro. We evaluate this policy change in a standard monetary model
+    with seigniorage financing of the deficit, departing from rational expectations while
+    maintaining full rationality of agents. Small departures from rational expectations imply
+    that inflation upon exit can be orders of magnitude higher than under rational expectations.
+
+- title: Credit Crises and Private Deleveraging
+  venue: ""
+  coauthors: ""
+  pdf: deleveraging.pdf
+  snapshot: deleveraging.png
+  abstract: >
+    Private debt shrinks sharply after financial crises, but households' and firms' deleveraging
+    have typically been studied in isolation. I study the aggregate effects of private
+    deleveraging in an economy with two-sided heterogeneity and a housing market, showing the
+    response of the economy to credit crises depends crucially on the financial asset position
+    of the productive sector — a statistic calculable directly from aggregate data.

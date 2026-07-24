@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Home
+title: Main
 permalink: /
 ---
 
@@ -21,8 +21,7 @@ I am an economist working on macroeconomics, inequality, and demographic change.
 
 ### CV
 
-**[Download full CV (PDF)](https://www.dropbox.com/s/REPLACE_WITH_ACTUAL_LINK/cv_macera.pdf?dl=0)**
-*(placeholder link — replace with the current Dropbox share link for cv_macera.pdf)*
+**[Download full CV (PDF)]({{ '/cv/cv_macera.pdf' | relative_url }})**
 
 **Education**
 

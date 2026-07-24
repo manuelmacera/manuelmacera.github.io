@@ -8,6 +8,7 @@ minima:
   social_links: []
 
 header_pages:
+  - index.md
   - research.md
   - teaching.md
   - demographics.md

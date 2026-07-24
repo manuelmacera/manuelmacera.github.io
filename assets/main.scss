@@ -108,6 +108,7 @@ a:hover {
   width: 220px;
   height: 220px;
   object-fit: cover;
+  object-position: center 20%;
   border-radius: 16px;
   margin: 0;
   border: 3px solid var(--gold);
@@ -217,6 +218,22 @@ a:hover {
 
 .paper-pdf-link {
   font-weight: 600;
+}
+
+.coming-soon {
+  background-color: var(--cream-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2em;
+}
+
+.coming-soon h2 {
+  margin-top: 0;
+}
+
+.coming-soon p {
+  margin-bottom: 0;
+  color: $text-color;
 }
 
 @media screen and (max-width: 600px) {

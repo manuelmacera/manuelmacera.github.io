@@ -77,21 +77,27 @@ a:hover {
   max-width: 720px;
 }
 
-/* Hero header on Home */
+/* Hero header on Home: white/cream card, red accent stripe + gold-framed
+   photo, instead of a solid color block */
 .hero {
   display: flex;
   align-items: center;
-  gap: 2.5em;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: var(--cream);
+  gap: 2em;
+  background-color: var(--cream-panel);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--accent);
   border-radius: 10px;
-  padding: 2.5em;
+  padding: 2em 2.5em;
   margin-bottom: 2em;
 }
 
-.hero h1,
+.hero h1 {
+  color: var(--accent-dark);
+  margin: 0;
+}
+
 .hero p {
-  color: var(--cream);
+  color: $text-color;
   margin: 0;
 }
 
@@ -102,12 +108,12 @@ a:hover {
 
 .hero .headshot {
   float: none;
-  width: 160px;
-  height: 160px;
+  width: 220px;
+  height: 220px;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: 16px;
   margin: 0;
-  border: 4px solid var(--cream);
+  border: 3px solid var(--gold);
   flex-shrink: 0;
 }
 
@@ -116,6 +122,11 @@ a:hover {
     flex-direction: column;
     text-align: center;
     gap: 1em;
+  }
+
+  .hero .headshot {
+    width: 160px;
+    height: 160px;
   }
 }
 

@@ -10,7 +10,6 @@ minima:
 header_pages:
   - research.md
   - teaching.md
-  - cv.md
   - demographics.md
 
 plugins:

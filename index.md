@@ -8,16 +8,14 @@ permalink: /
   <img src="{{ '/assets/images/headshot.jpg' | relative_url }}" alt="Manuel Macera" class="headshot">
   <div class="hero-text">
     <h1>Manuel Macera</h1>
-    <p>Department of Economics, Universidad Torcuato Di Tella (UTDT)</p>
+    <p class="hero-affiliation">Department of Economics, Universidad Torcuato Di Tella (UTDT)</p>
+    <p class="hero-bio">I am an economist working on macroeconomics, inequality, and demographic change. See the <a href="{{ '/research.html' | relative_url }}">Research</a> and <a href="{{ '/teaching.html' | relative_url }}">Teaching</a> pages for more.</p>
+    <p class="hero-contact">
+      <strong>Email:</strong> manuelmacera@gmail.com &nbsp;&middot;&nbsp;
+      <strong>Address:</strong> Universidad Torcuato Di Tella, Buenos Aires, Argentina
+    </p>
   </div>
 </div>
-
-I am an economist working on macroeconomics, inequality, and demographic change. See the [Research](/research.html) and [Teaching](/teaching.html) pages for more.
-
-### Contact
-
-- **Email:** manuelmacera@gmail.com
-- **Address:** Universidad Torcuato Di Tella, Buenos Aires, Argentina
 
 ### CV
 

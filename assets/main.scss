@@ -103,6 +103,19 @@ a:hover {
   margin-bottom: 0.2em;
 }
 
+.hero .hero-affiliation {
+  margin-bottom: 1em;
+}
+
+.hero .hero-bio {
+  margin-bottom: 0.8em;
+}
+
+.hero .hero-contact {
+  font-size: 0.95em;
+  color: $grey-color-dark;
+}
+
 .hero .headshot {
   float: none;
   width: 220px;

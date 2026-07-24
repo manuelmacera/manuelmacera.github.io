@@ -67,13 +67,10 @@ a:hover {
   max-width: min(1400px, 92%);
 }
 
-/* But keep actual reading content (prose, paper cards) at a comfortable,
-   compact measure so paragraphs and the paper snapshots don't stretch
-   out across the whole wide page shell. Left-aligned with the headings,
-   just narrower on the right so lines/cards don't sprawl. */
+/* Keep plain paragraphs/lists at a comfortable reading width, but let
+   the paper/course cards use the full page width */
 .post-content > p,
-.post-content > ul,
-.paper-list {
+.post-content > ul {
   max-width: 720px;
 }
 
@@ -199,6 +196,7 @@ a:hover {
 .paper-details {
   flex: 1;
   min-width: 0;
+  max-width: 640px;
 }
 
 .paper-abstract {

@@ -4,6 +4,7 @@ _site/
 .jekyll-metadata
 vendor/
 .bundle/
+.DS_Store
 
 # Paywalled publisher Version-of-Record PDFs — used locally to generate
 # page-1 snapshot images, but not ours to redistribute publicly

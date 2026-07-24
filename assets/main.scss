@@ -80,6 +80,7 @@ a:hover {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  justify-content: space-between;
   gap: 2em;
   background-color: var(--cream-panel);
   border: 1px solid var(--border);

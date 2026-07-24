@@ -4,3 +4,9 @@ _site/
 .jekyll-metadata
 vendor/
 .bundle/
+
+# Paywalled publisher Version-of-Record PDFs — used locally to generate
+# page-1 snapshot images, but not ours to redistribute publicly
+papers/jedc_published.pdf
+papers/ej_published.pdf
+papers/el_published.pdf

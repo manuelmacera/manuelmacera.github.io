@@ -2,7 +2,9 @@
   venue: Journal of Economic Dynamics and Control, 2022
   coauthors: with Constantino Hevia and Andy Neumeyer
   pdf: hmn2022.pdf
-  snapshot: hmn2022.png
+  snapshot: hmn2022_published.png
+  doi: https://doi.org/10.1016/j.jedc.2022.104328
+  bibtex: hmn2022.bib
   abstract: >
     We document the heterogeneous effect of covid-19 on health and economic outcomes across
     socioeconomic strata in Bogotá. We assess its distributional impact and evaluate policy
@@ -14,6 +16,8 @@
   coauthors: with Hitoshi Tsujiyama
   pdf: inequality_technological_change.pdf
   snapshot: inequality_technological_change_published.png
+  doi: https://doi.org/10.3982/QE1693
+  bibtex: inequality_technological_change.bib
   abstract: >
     We study how technological change affects between- and within-education-group inequality
     in the United States, using a model with heterogeneous workers and firms in which the
@@ -25,7 +29,9 @@
   venue: The Economic Journal, 2025
   coauthors: with Elisa Belfiori (UTDT)
   pdf: BM2025_Climate_Demographics.pdf
-  snapshot: BM2025_Climate_Demographics.png
+  snapshot: BM2025_Climate_Demographics_published.png
+  doi: https://doi.org/10.1093/ej/ueaf118
+  bibtex: BM2025_Climate_Demographics.bib
   abstract: >
     We build an overlapping-generations climate-economy model with a rich demographic
     structure, allowing population growth and survival probabilities to vary over time. The
@@ -39,7 +45,9 @@
   venue: Economics Letters, 2025
   coauthors: with Elisa Belfiori (UTDT)
   pdf: EL_Social_Discounting.pdf
-  snapshot: EL_Social_Discounting.png
+  snapshot: EL_Social_Discounting_published.png
+  doi: https://doi.org/10.1016/j.econlet.2025.112584
+  bibtex: EL_Social_Discounting.bib
   abstract: >
     We study social discounting under demographic transitions, showing how changes in
     population growth and age structure give rise to a "demographic premium" — the spread

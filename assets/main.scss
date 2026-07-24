@@ -208,6 +208,13 @@ a:hover {
   font-style: italic;
 }
 
+.paper-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2em;
+  margin-top: 0.8em;
+}
+
 .paper-pdf-link {
   font-weight: 600;
 }

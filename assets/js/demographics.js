@@ -42,15 +42,18 @@ function stableDist(asfrAges, asfrVals, pxAges, pxVals) {
   return { r, ages: pxAges, values: raw };
 }
 
-// Hadwiger (1940) fertility curve. H is fixed to the actual TFR computed from data,
-// leaving A (shape) and B (mean childbearing age) as the two adjustable parameters.
-function hadwigerASFR(ages, H, A, B) {
-  return ages.map(x => {
-    const v = 1000 * H * (A / B) * Math.pow(B / x, 1.5) * Math.exp(-A * A * (B / x + x / B - 2));
-    return +v.toFixed(2);
-  });
-}
 function computeTFR(asfrVals) { return asfrVals.reduce((s, v) => s + v, 0) / 1000; }
+
+// Hadwiger (1940). H fixed to the actual TFR, leaving A (shape) and B (mean
+// childbearing age) as the two adjustable parameters.
+function hadwigerASFR(ages, H, A, B) {
+  return ages.map(x => +(1000 * H * (A / B) * Math.pow(B / x, 1.5) * Math.exp(-A * A * (B / x + x / B - 2))).toFixed(2));
+}
+// Plain Normal curve, peak height anchored to the actual data's max — a cruder
+// illustrative alternative to Hadwiger.
+function normalASFR(ages, peak, mean, sd) {
+  return ages.map(x => +(peak * Math.exp(-((x - mean) ** 2) / (2 * sd * sd))).toFixed(2));
+}
 
 // Force px = 0 at the terminal age (100), matching the data's own open-ended convention.
 function clampTerminal(pxVals) { const out = pxVals.slice(); out[out.length - 1] = 0; return out; }
@@ -60,35 +63,34 @@ function exponentialPx(ages, mu) { const q = 1 - Math.exp(-mu); return clampTerm
 
 function resample(ages, values) { const out = []; for (let a = 0; a <= 100; a++) out.push(lerp(ages, values, a)); return out; }
 
-function distStats(resampled, r) {
+function distStats(resampled) {
   const total = resampled.reduce((s, v) => s + v, 0);
   const youth = resampled.slice(0, 15).reduce((s, v) => s + v, 0);
   const working = resampled.slice(15, 65).reduce((s, v) => s + v, 0);
   const old = resampled.slice(65, 101).reduce((s, v) => s + v, 0);
   let cum = 0, median = 0;
   for (let a = 0; a <= 100; a++) { cum += resampled[a]; if (cum >= total / 2) { median = a; break; } }
-  return { median, youthDep: youth / working * 100, oldDep: old / working * 100, aging: old / youth * 100, r };
+  return { median, youthDep: youth / working, oldDep: old / working };
 }
 
 function legendHTML(items) {
   return items.map(l => `<span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:${l.color};"></span>${l.text}</span>`).join('');
 }
 function statRow(name, color, s) {
-  const rTxt = s.r === null ? '–' : (s.r * 100).toFixed(2) + '%';
-  return `<tr><td style="padding:4px 6px 4px 0; white-space:nowrap;"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:${color}; margin-right:4px;"></span>${name}</td>
-    <td style="padding:4px 6px; text-align:right;">${s.median}</td>
-    <td style="padding:4px 6px; text-align:right;">${s.youthDep.toFixed(0)}</td>
-    <td style="padding:4px 6px; text-align:right;">${s.oldDep.toFixed(0)}</td>
-    <td style="padding:4px 0 4px 6px; text-align:right;">${s.aging.toFixed(0)}</td>
-    <td style="padding:4px 0 4px 6px; text-align:right;">${rTxt}</td></tr>`;
+  return `<tr style="border-bottom:1px solid #e6ddce;"><td style="padding:6px 8px 6px 0; white-space:nowrap;"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:${color}; margin-right:5px;"></span>${name}</td>
+    <td style="padding:6px 8px; text-align:right;">${s.median}</td>
+    <td style="padding:6px 0 6px 8px; text-align:right;">${s.youthDep.toFixed(2)}</td>
+    <td style="padding:6px 0 6px 8px; text-align:right;">${s.oldDep.toFixed(2)}</td></tr>`;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
   const $ = id => document.getElementById(id);
   const countrySel = $('demo-country'), yearSlider = $('demo-year'), yearOut = $('demo-year-out');
-  const asfrMode = $('demo-asfr-mode'), compareCountry = $('demo-compare-country'), hadwigerControls = $('demo-hadwiger-controls');
+  const overlayMode = $('demo-overlay-mode'), compareCountry = $('demo-compare-country');
+  const asfrFitForm = $('demo-asfr-fit-form'), hadwigerControls = $('demo-hadwiger-controls'), normalControls = $('demo-normal-controls');
   const hadA = $('demo-hadA'), hadB = $('demo-hadB'), hadA_out = $('demo-hadA-out'), hadB_out = $('demo-hadB-out');
-  const survMode = $('demo-surv-mode'), gompertzControls = $('demo-gompertz-controls'), expControls = $('demo-exp-controls');
+  const normMean = $('demo-normMean'), normSpread = $('demo-normSpread'), normMean_out = $('demo-normMean-out'), normSpread_out = $('demo-normSpread-out');
+  const survFitForm = $('demo-surv-fit-form'), gompertzControls = $('demo-gompertz-controls'), expControls = $('demo-exp-controls');
   const gA = $('demo-gA'), gB = $('demo-gB'), gA_out = $('demo-gA-out'), gB_out = $('demo-gB-out');
   const expMu = $('demo-expMu'), expMu_out = $('demo-expMu-out');
 
@@ -122,49 +124,62 @@ document.addEventListener('DOMContentLoaded', function () {
     const c = countrySel.value, y = YEARS[+yearSlider.value];
     yearOut.textContent = y;
     const d = DEMO_DATA[c];
-    const aMode = asfrMode.value, sMode = survMode.value;
-    compareCountry.style.display = aMode === 'country' ? 'inline-block' : 'none';
-    hadwigerControls.style.display = aMode === 'hadwiger' ? 'flex' : 'none';
-    gompertzControls.style.display = sMode === 'gompertz' ? 'flex' : 'none';
-    expControls.style.display = sMode === 'exponential' ? 'flex' : 'none';
+    const mode = overlayMode.value;
 
-    // ASFR
+    compareCountry.style.display = mode === 'country' ? 'inline-block' : 'none';
+    asfrFitForm.style.display = mode === 'fit' ? 'inline-block' : 'none';
+    survFitForm.style.display = mode === 'fit' ? 'inline-block' : 'none';
+    hadwigerControls.style.display = mode === 'fit' && asfrFitForm.value === 'hadwiger' ? 'flex' : 'none';
+    normalControls.style.display = mode === 'fit' && asfrFitForm.value === 'normal' ? 'flex' : 'none';
+    gompertzControls.style.display = mode === 'fit' && survFitForm.value === 'gompertz' ? 'flex' : 'none';
+    expControls.style.display = mode === 'fit' && survFitForm.value === 'exponential' ? 'flex' : 'none';
+
     const asfrVals = d.asfr_by_year[y];
-    const asfrDatasets = [{ label: c, data: asfrVals.map((v, i) => ({ x: d.asfr_ages[i], y: v })), borderColor: COLORS.primary, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }];
-    const asfrLegendItems = [{ color: COLORS.primary, text: c }];
-    let altAsfrVals = null;
-    if (aMode === 'country') {
+    const pxVals = d.px_by_year[y];
+    let altAsfrVals = null, altPxVals = null, altLabel = 'Alternate';
+
+    if (mode === 'country') {
       const c2 = compareCountry.value;
       altAsfrVals = DEMO_DATA[c2].asfr_by_year[y];
-      asfrDatasets.push({ data: altAsfrVals.map((v, i) => ({ x: d.asfr_ages[i], y: v })), borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
-      asfrLegendItems.push({ color: COLORS.alt, text: c2 + ' (dashed)' });
-    } else if (aMode === 'hadwiger') {
-      hadA_out.textContent = hadA.value; hadB_out.textContent = hadB.value;
-      const H = computeTFR(asfrVals);
-      altAsfrVals = hadwigerASFR(d.asfr_ages, H, +hadA.value, +hadB.value);
-      asfrDatasets.push({ data: altAsfrVals.map((v, i) => ({ x: d.asfr_ages[i], y: v })), borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.4, pointRadius: 0, borderWidth: 2 });
-      asfrLegendItems.push({ color: COLORS.alt, text: 'Hadwiger fit, H = ' + H.toFixed(2) + ' (dashed)' });
+      altPxVals = DEMO_DATA[c2].px_by_year[y];
+      altLabel = c2;
+    } else if (mode === 'fit') {
+      if (asfrFitForm.value === 'hadwiger') {
+        hadA_out.textContent = hadA.value; hadB_out.textContent = hadB.value;
+        const H = computeTFR(asfrVals);
+        altAsfrVals = hadwigerASFR(d.asfr_ages, H, +hadA.value, +hadB.value);
+      } else {
+        normMean_out.textContent = normMean.value; normSpread_out.textContent = normSpread.value;
+        altAsfrVals = normalASFR(d.asfr_ages, Math.max(...asfrVals), +normMean.value, +normSpread.value);
+      }
+      if (survFitForm.value === 'gompertz') {
+        const aVal = +gA.value / 1e6, bVal = +gB.value / 1000;
+        gA_out.textContent = aVal.toFixed(5); gB_out.textContent = bVal.toFixed(3);
+        altPxVals = gompertzPx(d.px_ages, aVal, bVal);
+      } else {
+        const mu = +expMu.value / 1000;
+        expMu_out.textContent = mu.toFixed(3);
+        altPxVals = exponentialPx(d.px_ages, mu);
+      }
+      altLabel = 'Fitted';
+    }
+
+    // ASFR chart
+    const asfrDatasets = [{ data: toPoints(d.asfr_ages, asfrVals), borderColor: COLORS.primary, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }];
+    const asfrLegendItems = [{ color: COLORS.primary, text: c }];
+    if (altAsfrVals) {
+      asfrDatasets.push({ data: toPoints(d.asfr_ages, altAsfrVals), borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
+      asfrLegendItems.push({ color: COLORS.alt, text: altLabel + ' (dashed)' });
     }
     $('demo-asfr-legend').innerHTML = legendHTML(asfrLegendItems);
     upsertChart('asfr', 'demo-asfrChart', asfrDatasets, 350, 15, 49);
 
-    // Survival probability
-    const pxVals = d.px_by_year[y];
+    // Survival probability chart
     const pxDatasets = [{ data: toPoints(d.px_ages, pxVals), borderColor: COLORS.primary, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }];
     const pxLegendItems = [{ color: COLORS.primary, text: c + ' (actual)' }];
-    let altPxVals = null;
-    if (sMode === 'gompertz') {
-      const aVal = +gA.value / 1e6, bVal = +gB.value / 1000;
-      gA_out.textContent = aVal.toFixed(5); gB_out.textContent = bVal.toFixed(3);
-      altPxVals = gompertzPx(d.px_ages, aVal, bVal);
+    if (altPxVals) {
       pxDatasets.push({ data: toPoints(d.px_ages, altPxVals), borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
-      pxLegendItems.push({ color: COLORS.alt, text: 'Gompertz fit (dashed)' });
-    } else if (sMode === 'exponential') {
-      const mu = +expMu.value / 1000;
-      expMu_out.textContent = mu.toFixed(3);
-      altPxVals = exponentialPx(d.px_ages, mu);
-      pxDatasets.push({ data: toPoints(d.px_ages, altPxVals), borderColor: COLORS.alt, borderDash: [2, 2], fill: false, tension: 0, pointRadius: 0, borderWidth: 2 });
-      pxLegendItems.push({ color: COLORS.alt, text: 'Constant-hazard exponential fit (dotted)' });
+      pxLegendItems.push({ color: COLORS.alt, text: altLabel + ' (dashed)' });
     }
     $('demo-px-legend').innerHTML = legendHTML(pxLegendItems);
     upsertChart('px', 'demo-pxChart', pxDatasets, 1, 0, 100);
@@ -174,29 +189,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const actualStableTotal = actualStable.values.reduce((s, x) => s + x, 0);
     const popTotal = d.pop_by_year[y].reduce((s, x) => s + x, 0);
     const distDatasets = [
-      { data: toPoints(d.pop_ages, d.pop_by_year[y]), borderColor: COLORS.current, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 },
+      { data: toPoints(d.pop_ages, d.pop_by_year[y]), borderColor: COLORS.current, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 4 },
       { data: toPoints(actualStable.ages, actualStable.values.map(v => +(v / actualStableTotal * popTotal).toFixed(3))), borderColor: COLORS.stableActual, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }
     ];
-    const distLegendItems = [{ color: COLORS.current, text: 'Current (UN WPP)' }, { color: COLORS.stableActual, text: 'Stable, actual rates (dashed)' }];
-    let statsHTML = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:10px;"><td></td><td style="text-align:right;">Med.age</td><td style="text-align:right;">Youth dep.</td><td style="text-align:right;">Old dep.</td><td style="text-align:right;">Aging idx</td><td style="text-align:right;">r</td></tr></thead><tbody>';
-    statsHTML += statRow('Current', COLORS.current, distStats(resample(d.pop_ages, d.pop_by_year[y]), null));
-    statsHTML += statRow('Stable (actual)', COLORS.stableActual, distStats(resample(actualStable.ages, actualStable.values), actualStable.r));
+    const distLegendItems = [{ color: COLORS.current, text: 'Current (UN WPP) — thicker line' }, { color: COLORS.stableActual, text: 'Stable, actual rates (dashed)' }];
+    let statsHTML = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:right; padding-bottom:6px;">Median age</td><td style="text-align:right; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:right; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>';
+    statsHTML += statRow('Current', COLORS.current, distStats(resample(d.pop_ages, d.pop_by_year[y])));
+    statsHTML += statRow('Stable (actual)', COLORS.stableActual, distStats(resample(actualStable.ages, actualStable.values)));
 
-    const effAsfr = altAsfrVals || asfrVals;
-    const effPx = altPxVals || pxVals;
     if (altAsfrVals || altPxVals) {
+      const effAsfr = altAsfrVals || asfrVals;
+      const effPx = altPxVals || pxVals;
       const altStable = stableDist(d.asfr_ages, effAsfr, d.px_ages, effPx);
       const altTotal = altStable.values.reduce((s, x) => s + x, 0);
       distDatasets.push({ data: toPoints(altStable.ages, altStable.values.map(v => +(v / altTotal * popTotal).toFixed(3))), borderColor: COLORS.alt, borderDash: [2, 2], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
-      distLegendItems.push({ color: COLORS.alt, text: 'Stable, alternate rates (dotted)' });
-      statsHTML += statRow('Stable (alt)', COLORS.alt, distStats(resample(altStable.ages, altStable.values), altStable.r));
+      distLegendItems.push({ color: COLORS.alt, text: `Stable, ${altLabel} rates (dotted)` });
+      statsHTML += statRow('Stable (' + altLabel + ')', COLORS.alt, distStats(resample(altStable.ages, altStable.values)));
     }
     statsHTML += '</tbody></table>';
+    statsHTML += '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.5;">Median age: age below which half the (modeled) population falls. Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64. Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';
     $('demo-stats').innerHTML = statsHTML;
     $('demo-dist-legend').innerHTML = legendHTML(distLegendItems);
     upsertChart('dist', 'demo-distChart', distDatasets, 6, 0, 100);
   }
 
-  [countrySel, yearSlider, asfrMode, compareCountry, hadA, hadB, survMode, gA, gB, expMu].forEach(el => el.addEventListener('input', render));
+  [countrySel, yearSlider, overlayMode, compareCountry, asfrFitForm, survFitForm, hadA, hadB, normMean, normSpread, gA, gB, expMu].forEach(el => el.addEventListener('input', render));
   render();
 });

@@ -23,29 +23,44 @@ permalink: /demographics.html
   </div>
 </div>
 
+<div style="background:#fffdf9; border:1px solid #e6ddce; border-radius:8px; padding:12px 16px; margin:0 0 1.5rem; display:flex; flex-wrap:wrap; gap:12px; align-items:center;">
+  <div>
+    <label style="font-size:13px; color:#5f5e5a; display:block; margin-bottom:4px;">Overlay (applies to both panels below)</label>
+    <select id="demo-overlay-mode" style="min-width:160px;">
+      <option value="none">No overlay</option>
+      <option value="country">Compare country</option>
+      <option value="fit">Parametric fit</option>
+    </select>
+  </div>
+  <select id="demo-compare-country" style="display:none; min-width:140px;"></select>
+</div>
+
 <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:16px; margin-bottom:16px;">
   <div class="paper-card" style="padding:1em 1.3em;">
     <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:8px;">
-      <select id="demo-asfr-mode" style="min-width:150px;">
-        <option value="none">No overlay</option>
-        <option value="country">Compare country</option>
+      <select id="demo-asfr-fit-form" style="display:none; min-width:130px;">
         <option value="hadwiger">Hadwiger fit</option>
+        <option value="normal">Normal fit</option>
       </select>
-      <select id="demo-compare-country" style="display:none; min-width:140px;"></select>
       <div id="demo-hadwiger-controls" style="display:none; flex:1; min-width:220px; gap:12px;">
         <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Shape A: <b id="demo-hadA-out">2</b></label><input type="range" id="demo-hadA" min="0.8" max="3.5" step="0.1" value="2" style="width:100%;"></div>
         <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Mean age B: <b id="demo-hadB-out">27</b></label><input type="range" id="demo-hadB" min="20" max="35" step="0.5" value="27" style="width:100%;"></div>
       </div>
+      <div id="demo-normal-controls" style="display:none; flex:1; min-width:220px; gap:12px;">
+        <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Mean age: <b id="demo-normMean-out">28</b></label><input type="range" id="demo-normMean" min="18" max="42" step="1" value="28" style="width:100%;"></div>
+        <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Spread: <b id="demo-normSpread-out">7</b></label><input type="range" id="demo-normSpread" min="3" max="15" step="0.5" value="7" style="width:100%;"></div>
+      </div>
     </div>
     <p style="font-size:13px; color:#5f5e5a; margin:0 0 6px;">ASFR (births per 1,000 women)</p>
-    <div style="position:relative; height:200px;"><canvas id="demo-asfrChart" role="img" aria-label="Age-specific fertility rate by age">ASFR by age</canvas></div>
+    <div style="max-width:460px; margin:0 auto;">
+      <div style="position:relative; height:200px;"><canvas id="demo-asfrChart" role="img" aria-label="Age-specific fertility rate by age">ASFR by age</canvas></div>
+    </div>
     <div id="demo-asfr-legend" style="display:flex; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
   </div>
 
   <div class="paper-card" style="padding:1em 1.3em;">
     <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:8px;">
-      <select id="demo-surv-mode" style="min-width:150px;">
-        <option value="none">No overlay</option>
+      <select id="demo-surv-fit-form" style="display:none; min-width:150px;">
         <option value="gompertz">Gompertz fit</option>
         <option value="exponential">Exponential (constant hazard)</option>
       </select>
@@ -58,21 +73,30 @@ permalink: /demographics.html
       </div>
     </div>
     <p style="font-size:13px; color:#5f5e5a; margin:0 0 6px;">Survival probability (conditional, px)</p>
-    <div style="position:relative; height:200px;"><canvas id="demo-pxChart" role="img" aria-label="Survival probability by age with parametric fit">Survival probability by age</canvas></div>
+    <div style="max-width:460px; margin:0 auto;">
+      <div style="position:relative; height:200px;"><canvas id="demo-pxChart" role="img" aria-label="Survival probability by age with parametric fit">Survival probability by age</canvas></div>
+    </div>
     <div id="demo-px-legend" style="display:flex; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
   </div>
 </div>
 
-<div class="paper-card" style="padding:1em 1.3em; display:grid; grid-template-columns:2fr 1fr; gap:16px;">
-  <div>
+<hr style="border:none; border-top:1px solid #e6ddce; margin:2em 0;">
+
+<div style="display:flex; flex-wrap:wrap; gap:16px;">
+  <div class="paper-card" style="padding:1em 1.3em; flex:2 1 420px;">
     <p style="font-size:13px; color:#5f5e5a; margin:0 0 6px;">Age distribution: current vs. implied long-run (stable)</p>
-    <div style="position:relative; height:240px;"><canvas id="demo-distChart" role="img" aria-label="Current age distribution compared to stable age distributions implied by actual and alternate vital rates">Age distribution comparison</canvas></div>
+    <div style="max-width:640px; margin:0 auto;">
+      <div style="position:relative; height:260px;"><canvas id="demo-distChart" role="img" aria-label="Current age distribution compared to stable age distributions implied by actual and alternate vital rates">Age distribution comparison</canvas></div>
+    </div>
     <div id="demo-dist-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
   </div>
-  <div id="demo-stats" style="font-size:12px;"></div>
+  <div class="paper-card" style="padding:1em 1.3em; flex:1 1 260px;">
+    <p style="font-size:13px; color:#5f5e5a; margin:0 0 10px;">Summary statistics</p>
+    <div id="demo-stats" style="font-size:12px;"></div>
+  </div>
 </div>
 
-<p style="font-size:12px; color:#898781; margin:1rem 0 0;">Source: United Nations, Department of Economic and Social Affairs, Population Division. World Population Prospects 2024.</p>
+<p style="font-size:12px; color:#898781; margin:1.5rem 0 0;">Source: United Nations, Department of Economic and Social Affairs, Population Division. World Population Prospects 2024.</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="{{ '/assets/js/demographics.js' | relative_url }}"></script>

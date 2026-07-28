@@ -44,15 +44,19 @@ function stableDist(asfrAges, asfrVals, pxAges, pxVals) {
 
 function computeTFR(asfrVals) { return asfrVals.reduce((s, v) => s + v, 0) / 1000; }
 
-// Hadwiger (1940). H fixed to the actual TFR, leaving A (shape) and B (mean
-// childbearing age) as the two adjustable parameters.
-function hadwigerASFR(ages, H, A, B) {
-  return ages.map(x => +(1000 * H * (A / B) * Math.pow(B / x, 1.5) * Math.exp(-A * A * (B / x + x / B - 2))).toFixed(2));
+// Shape-only curves (arbitrary scale) — the actual TFR match is enforced afterward
+// by rescaleToTFR, since neither curve's raw formula integrates to the right total
+// once truncated to ages 15-49 and evaluated at discrete single-year steps.
+function hadwigerShape(ages, A, B) {
+  return ages.map(x => (A / B) * Math.pow(B / x, 1.5) * Math.exp(-A * A * (B / x + x / B - 2)));
 }
-// Plain Normal curve, peak height anchored to the actual data's max — a cruder
-// illustrative alternative to Hadwiger.
-function normalASFR(ages, peak, mean, sd) {
-  return ages.map(x => +(peak * Math.exp(-((x - mean) ** 2) / (2 * sd * sd))).toFixed(2));
+function normalShape(ages, mean, sd) {
+  return ages.map(x => Math.exp(-((x - mean) ** 2) / (2 * sd * sd)));
+}
+function rescaleToTFR(rawShape, targetTFR) {
+  const rawTFR = rawShape.reduce((s, v) => s + v, 0) / 1000;
+  const factor = rawTFR > 0 ? targetTFR / rawTFR : 0;
+  return rawShape.map(v => +(v * factor).toFixed(2));
 }
 
 // Force px = 0 at the terminal age (100), matching the data's own open-ended convention.
@@ -60,6 +64,57 @@ function clampTerminal(pxVals) { const out = pxVals.slice(); out[out.length - 1]
 
 function gompertzPx(ages, a, b) { return clampTerminal(ages.map(x => +(1 - Math.min(a * Math.exp(b * x), 0.999)).toFixed(4))); }
 function exponentialPx(ages, mu) { const q = 1 - Math.exp(-mu); return clampTerminal(ages.map(() => +(1 - q).toFixed(4))); }
+
+function sse(a, b) { let s = 0; for (let i = 0; i < a.length; i++) s += (a[i] - b[i]) ** 2; return s; }
+
+// Small grid-search "best fit" — cheap enough to run synchronously on every
+// country/year/form change. Returns slider-scale values (same units the
+// sliders themselves use), so the result can be written straight into value=.
+function autoFitHadwiger(ages, targetTFR, actualVals) {
+  let best = { A: 2, B: 27, err: Infinity };
+  for (let Ai = 8; Ai <= 35; Ai++) {
+    const A = Ai / 10;
+    for (let Bi = 40; Bi <= 70; Bi++) {
+      const B = Bi / 2;
+      const fitted = rescaleToTFR(hadwigerShape(ages, A, B), targetTFR);
+      const e = sse(fitted, actualVals);
+      if (e < best.err) best = { A, B, err: e };
+    }
+  }
+  return best;
+}
+function autoFitNormal(ages, targetTFR, actualVals) {
+  let best = { mean: 28, sd: 7, err: Infinity };
+  for (let mean = 18; mean <= 42; mean++) {
+    for (let sdi = 6; sdi <= 30; sdi++) {
+      const sd = sdi / 2;
+      const fitted = rescaleToTFR(normalShape(ages, mean, sd), targetTFR);
+      const e = sse(fitted, actualVals);
+      if (e < best.err) best = { mean, sd, err: e };
+    }
+  }
+  return best;
+}
+function autoFitGompertz(ages, actualPx) {
+  let best = { a: 10, b: 85, err: Infinity };
+  for (let ai = 1; ai <= 900; ai++) {
+    for (let bi = 30; bi <= 160; bi++) {
+      const fitted = gompertzPx(ages, ai / 1e6, bi / 1000);
+      const e = sse(fitted, actualPx);
+      if (e < best.err) best = { a: ai, b: bi, err: e };
+    }
+  }
+  return best;
+}
+function autoFitExponential(ages, actualPx) {
+  let best = { mu: 10, err: Infinity };
+  for (let mi = 1; mi <= 150; mi++) {
+    const fitted = exponentialPx(ages, mi / 1000);
+    const e = sse(fitted, actualPx);
+    if (e < best.err) best = { mu: mi, err: e };
+  }
+  return best;
+}
 
 function resample(ages, values) { const out = []; for (let a = 0; a <= 100; a++) out.push(lerp(ages, values, a)); return out; }
 
@@ -114,17 +169,25 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     } else {
       charts[key].data.datasets = datasets;
+      charts[key].options.scales.y.max = yMax;
+      charts[key].options.scales.x.min = xMin;
+      charts[key].options.scales.x.max = xMax;
       charts[key].update();
     }
   }
 
   function toPoints(ages, values) { return ages.map((a, i) => ({ x: a, y: values[i] })); }
 
-  function render() {
+  // autoFit: true when triggered by a context change (country/year/mode/form) —
+  // recompute the best-fit parameters and overwrite the sliders. false when the
+  // user is dragging a slider themselves — just re-render with current values.
+  function render(autoFit) {
     const c = countrySel.value, y = YEARS[+yearSlider.value];
     yearOut.textContent = y;
     const d = DEMO_DATA[c];
     const mode = overlayMode.value;
+    const asfrVals = d.asfr_by_year[y];
+    const pxVals = d.px_by_year[y];
 
     compareCountry.style.display = mode === 'country' ? 'inline-block' : 'none';
     asfrFitForm.style.display = mode === 'fit' ? 'inline-block' : 'none';
@@ -134,8 +197,23 @@ document.addEventListener('DOMContentLoaded', function () {
     gompertzControls.style.display = mode === 'fit' && survFitForm.value === 'gompertz' ? 'flex' : 'none';
     expControls.style.display = mode === 'fit' && survFitForm.value === 'exponential' ? 'flex' : 'none';
 
-    const asfrVals = d.asfr_by_year[y];
-    const pxVals = d.px_by_year[y];
+    if (mode === 'fit' && autoFit) {
+      if (asfrFitForm.value === 'hadwiger') {
+        const best = autoFitHadwiger(d.asfr_ages, computeTFR(asfrVals), asfrVals);
+        hadA.value = best.A; hadB.value = best.B;
+      } else {
+        const best = autoFitNormal(d.asfr_ages, computeTFR(asfrVals), asfrVals);
+        normMean.value = best.mean; normSpread.value = best.sd;
+      }
+      if (survFitForm.value === 'gompertz') {
+        const best = autoFitGompertz(d.px_ages, pxVals);
+        gA.value = best.a; gB.value = best.b;
+      } else {
+        const best = autoFitExponential(d.px_ages, pxVals);
+        expMu.value = best.mu;
+      }
+    }
+
     let altAsfrVals = null, altPxVals = null, altLabel = 'Alternate';
 
     if (mode === 'country') {
@@ -146,11 +224,10 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (mode === 'fit') {
       if (asfrFitForm.value === 'hadwiger') {
         hadA_out.textContent = hadA.value; hadB_out.textContent = hadB.value;
-        const H = computeTFR(asfrVals);
-        altAsfrVals = hadwigerASFR(d.asfr_ages, H, +hadA.value, +hadB.value);
+        altAsfrVals = rescaleToTFR(hadwigerShape(d.asfr_ages, +hadA.value, +hadB.value), computeTFR(asfrVals));
       } else {
         normMean_out.textContent = normMean.value; normSpread_out.textContent = normSpread.value;
-        altAsfrVals = normalASFR(d.asfr_ages, Math.max(...asfrVals), +normMean.value, +normSpread.value);
+        altAsfrVals = rescaleToTFR(normalShape(d.asfr_ages, +normMean.value, +normSpread.value), computeTFR(asfrVals));
       }
       if (survFitForm.value === 'gompertz') {
         const aVal = +gA.value / 1e6, bVal = +gB.value / 1000;
@@ -161,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
         expMu_out.textContent = mu.toFixed(3);
         altPxVals = exponentialPx(d.px_ages, mu);
       }
-      altLabel = 'Fitted';
+      altLabel = 'Best fit';
     }
 
     // ASFR chart
@@ -172,7 +249,8 @@ document.addEventListener('DOMContentLoaded', function () {
       asfrLegendItems.push({ color: COLORS.alt, text: altLabel + ' (dashed)' });
     }
     $('demo-asfr-legend').innerHTML = legendHTML(asfrLegendItems);
-    upsertChart('asfr', 'demo-asfrChart', asfrDatasets, 350, 15, 49);
+    const asfrMax = Math.max(...asfrDatasets.flatMap(ds => ds.data.map(p => p.y)));
+    upsertChart('asfr', 'demo-asfrChart', asfrDatasets, Math.ceil(asfrMax / 20) * 20, 15, 49);
 
     // Survival probability chart — displayed as the unconditional survivorship curve
     // l(x) (probability of surviving from birth to age x), not the conditional px,
@@ -197,19 +275,23 @@ document.addEventListener('DOMContentLoaded', function () {
       { data: toPoints(d.pop_ages, d.pop_by_year[y]), borderColor: COLORS.current, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 4 },
       { data: toPoints(actualStable.ages, actualStable.values.map(v => +(v / actualStableTotal * popTotal).toFixed(3))), borderColor: COLORS.stableActual, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }
     ];
-    const distLegendItems = [{ color: COLORS.current, text: 'Current (UN WPP) — thicker line' }, { color: COLORS.stableActual, text: 'Stable, actual rates (dashed)' }];
+    const distLegendItems = [
+      { color: COLORS.current, text: `Current — ${c} (thicker line)` },
+      { color: COLORS.stableActual, text: `Stable, actual rates — ${c} (dashed)` }
+    ];
     let statsHTML = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>';
-    statsHTML += statRow('Current', COLORS.current, distStats(resample(d.pop_ages, d.pop_by_year[y])));
-    statsHTML += statRow('Stable (actual)', COLORS.stableActual, distStats(resample(actualStable.ages, actualStable.values)));
+    statsHTML += statRow(`Current — ${c}`, COLORS.current, distStats(resample(d.pop_ages, d.pop_by_year[y])));
+    statsHTML += statRow(`Stable (actual) — ${c}`, COLORS.stableActual, distStats(resample(actualStable.ages, actualStable.values)));
 
     if (altAsfrVals || altPxVals) {
       const effAsfr = altAsfrVals || asfrVals;
       const effPx = altPxVals || pxVals;
       const altStable = stableDist(d.asfr_ages, effAsfr, d.px_ages, effPx);
       const altTotal = altStable.values.reduce((s, x) => s + x, 0);
+      const altStableLabel = altLabel;
       distDatasets.push({ data: toPoints(altStable.ages, altStable.values.map(v => +(v / altTotal * popTotal).toFixed(3))), borderColor: COLORS.alt, borderDash: [2, 2], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
-      distLegendItems.push({ color: COLORS.alt, text: `Stable, ${altLabel} rates (dotted)` });
-      statsHTML += statRow('Stable (' + altLabel + ')', COLORS.alt, distStats(resample(altStable.ages, altStable.values)));
+      distLegendItems.push({ color: COLORS.alt, text: `Stable, ${altStableLabel} rates (dotted)` });
+      statsHTML += statRow('Stable (' + altStableLabel + ')', COLORS.alt, distStats(resample(altStable.ages, altStable.values)));
     }
     statsHTML += '</tbody></table>';
     statsHTML += '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.6;">Median age: age below which half the (modeled) population falls.<br>Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64.<br>Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';
@@ -220,6 +302,8 @@ document.addEventListener('DOMContentLoaded', function () {
     upsertChart('dist', 'demo-distChart', distDatasets, Math.ceil(distMax * 2) / 2, 0, 100);
   }
 
-  [countrySel, yearSlider, overlayMode, compareCountry, asfrFitForm, survFitForm, hadA, hadB, normMean, normSpread, gA, gB, expMu].forEach(el => el.addEventListener('input', render));
-  render();
+  // Context changes trigger a fresh auto-fit; dragging a fit slider yourself just re-renders.
+  [countrySel, yearSlider, overlayMode, compareCountry, asfrFitForm, survFitForm].forEach(el => el.addEventListener('input', () => render(true)));
+  [hadA, hadB, normMean, normSpread, gA, gB, expMu].forEach(el => el.addEventListener('input', () => render(false)));
+  render(true);
 });

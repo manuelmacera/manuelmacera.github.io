@@ -65,11 +65,11 @@ permalink: /demographics.html
         <option value="exponential">Exponential (constant hazard)</option>
       </select>
       <div id="demo-gompertz-controls" style="display:none; flex:1; min-width:200px; gap:12px;">
-        <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Level a: <b id="demo-gA-out">0.00010</b></label><input type="range" id="demo-gA" min="1" max="40" step="1" value="10" style="width:100%;"></div>
-        <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Growth b: <b id="demo-gB-out">0.085</b></label><input type="range" id="demo-gB" min="75" max="100" step="1" value="85" style="width:100%;"></div>
+        <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Level a: <b id="demo-gA-out">0.00010</b></label><input type="range" id="demo-gA" min="1" max="900" step="1" value="10" style="width:100%;"></div>
+        <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Growth b: <b id="demo-gB-out">0.085</b></label><input type="range" id="demo-gB" min="30" max="160" step="1" value="85" style="width:100%;"></div>
       </div>
       <div id="demo-exp-controls" style="display:none; flex:1; min-width:150px;">
-        <label style="font-size:11px; color:#5f5e5a;">Hazard μ: <b id="demo-expMu-out">0.010</b></label><input type="range" id="demo-expMu" min="1" max="50" step="1" value="10" style="width:100%;">
+        <label style="font-size:11px; color:#5f5e5a;">Hazard μ: <b id="demo-expMu-out">0.010</b></label><input type="range" id="demo-expMu" min="1" max="150" step="1" value="10" style="width:100%;">
       </div>
     </div>
     <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Survival probability (unconditional, from birth)</p>

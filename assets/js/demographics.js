@@ -174,11 +174,16 @@ document.addEventListener('DOMContentLoaded', function () {
     $('demo-asfr-legend').innerHTML = legendHTML(asfrLegendItems);
     upsertChart('asfr', 'demo-asfrChart', asfrDatasets, 350, 15, 49);
 
-    // Survival probability chart
-    const pxDatasets = [{ data: toPoints(d.px_ages, pxVals), borderColor: COLORS.primary, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }];
+    // Survival probability chart — displayed as the unconditional survivorship curve
+    // l(x) (probability of surviving from birth to age x), not the conditional px,
+    // since differences between mortality patterns (e.g. Gompertz vs. exponential)
+    // show up far more clearly on the cumulative curve than on the near-1 conditional one.
+    const lVals = survivorship(d.px_ages, pxVals);
+    const pxDatasets = [{ data: toPoints(d.px_ages, lVals), borderColor: COLORS.primary, backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }];
     const pxLegendItems = [{ color: COLORS.primary, text: c + ' (actual)' }];
     if (altPxVals) {
-      pxDatasets.push({ data: toPoints(d.px_ages, altPxVals), borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
+      const lAltVals = survivorship(d.px_ages, altPxVals);
+      pxDatasets.push({ data: toPoints(d.px_ages, lAltVals), borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
       pxLegendItems.push({ color: COLORS.alt, text: altLabel + ' (dashed)' });
     }
     $('demo-px-legend').innerHTML = legendHTML(pxLegendItems);
@@ -193,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { data: toPoints(actualStable.ages, actualStable.values.map(v => +(v / actualStableTotal * popTotal).toFixed(3))), borderColor: COLORS.stableActual, borderDash: [6, 3], fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }
     ];
     const distLegendItems = [{ color: COLORS.current, text: 'Current (UN WPP) — thicker line' }, { color: COLORS.stableActual, text: 'Stable, actual rates (dashed)' }];
-    let statsHTML = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:right; padding-bottom:6px;">Median age</td><td style="text-align:right; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:right; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>';
+    let statsHTML = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>';
     statsHTML += statRow('Current', COLORS.current, distStats(resample(d.pop_ages, d.pop_by_year[y])));
     statsHTML += statRow('Stable (actual)', COLORS.stableActual, distStats(resample(actualStable.ages, actualStable.values)));
 
@@ -207,10 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
       statsHTML += statRow('Stable (' + altLabel + ')', COLORS.alt, distStats(resample(altStable.ages, altStable.values)));
     }
     statsHTML += '</tbody></table>';
-    statsHTML += '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.5;">Median age: age below which half the (modeled) population falls. Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64. Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';
+    statsHTML += '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.6;">Median age: age below which half the (modeled) population falls.<br>Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64.<br>Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';
     $('demo-stats').innerHTML = statsHTML;
     $('demo-dist-legend').innerHTML = legendHTML(distLegendItems);
-    upsertChart('dist', 'demo-distChart', distDatasets, 6, 0, 100);
+
+    const distMax = Math.max(...distDatasets.flatMap(ds => ds.data.map(p => p.y)));
+    upsertChart('dist', 'demo-distChart', distDatasets, Math.ceil(distMax * 2) / 2, 0, 100);
   }
 
   [countrySel, yearSlider, overlayMode, compareCountry, asfrFitForm, survFitForm, hadA, hadB, normMean, normSpread, gA, gB, expMu].forEach(el => el.addEventListener('input', render));

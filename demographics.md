@@ -51,7 +51,7 @@ permalink: /demographics.html
         <div style="flex:1;"><label style="font-size:11px; color:#5f5e5a;">Spread: <b id="demo-normSpread-out">7</b></label><input type="range" id="demo-normSpread" min="3" max="15" step="0.5" value="7" style="width:100%;"></div>
       </div>
     </div>
-    <p style="font-size:13px; color:#5f5e5a; margin:0 0 6px;">ASFR (births per 1,000 women)</p>
+    <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">ASFR (births per 1,000 women)</p>
     <div style="max-width:460px; margin:0 auto;">
       <div style="position:relative; height:200px;"><canvas id="demo-asfrChart" role="img" aria-label="Age-specific fertility rate by age">ASFR by age</canvas></div>
     </div>
@@ -72,7 +72,7 @@ permalink: /demographics.html
         <label style="font-size:11px; color:#5f5e5a;">Hazard μ: <b id="demo-expMu-out">0.010</b></label><input type="range" id="demo-expMu" min="1" max="50" step="1" value="10" style="width:100%;">
       </div>
     </div>
-    <p style="font-size:13px; color:#5f5e5a; margin:0 0 6px;">Survival probability (conditional, px)</p>
+    <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Survival probability (unconditional, from birth)</p>
     <div style="max-width:460px; margin:0 auto;">
       <div style="position:relative; height:200px;"><canvas id="demo-pxChart" role="img" aria-label="Survival probability by age with parametric fit">Survival probability by age</canvas></div>
     </div>
@@ -84,14 +84,14 @@ permalink: /demographics.html
 
 <div style="display:flex; flex-wrap:wrap; gap:16px;">
   <div class="paper-card" style="padding:1em 1.3em; flex:2 1 420px;">
-    <p style="font-size:13px; color:#5f5e5a; margin:0 0 6px;">Age distribution: current vs. implied long-run (stable)</p>
+    <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Age distribution: current vs. implied long-run (stable)</p>
     <div style="max-width:640px; margin:0 auto;">
       <div style="position:relative; height:260px;"><canvas id="demo-distChart" role="img" aria-label="Current age distribution compared to stable age distributions implied by actual and alternate vital rates">Age distribution comparison</canvas></div>
     </div>
     <div id="demo-dist-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
   </div>
   <div class="paper-card" style="padding:1em 1.3em; flex:1 1 260px;">
-    <p style="font-size:13px; color:#5f5e5a; margin:0 0 10px;">Summary statistics</p>
+    <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 10px;">Summary statistics</p>
     <div id="demo-stats" style="font-size:12px;"></div>
   </div>
 </div>

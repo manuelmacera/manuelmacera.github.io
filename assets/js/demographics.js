@@ -44,6 +44,31 @@ function stableDist(asfrAges, asfrVals, pxAges, pxVals) {
 
 function computeTFR(asfrVals) { return asfrVals.reduce((s, v) => s + v, 0) / 1000; }
 
+// Cohort-component projection: starting from the actual current age distribution,
+// hold ASFR and survival fixed forever and step the population forward one year
+// at a time. Returns the period-by-period growth rate — this is the "population
+// momentum" trajectory, which converges toward (but doesn't start at) the
+// asymptotic stable growth rate r from stableDist/solveLotka.
+function projectGrowthRate(asfrAges, asfrVals, pxFull, initialDistFull, years) {
+  let N = initialDistFull.slice();
+  const rates = [];
+  for (let t = 0; t < years; t++) {
+    const total = N.reduce((s, v) => s + v, 0);
+    let births = 0;
+    for (let i = 0; i < asfrAges.length; i++) {
+      const age = asfrAges[i];
+      births += N[age] * 0.4886 * (asfrVals[i] / 1000);
+    }
+    const next = new Array(101).fill(0);
+    for (let age = 0; age < 100; age++) next[age + 1] = N[age] * pxFull[age];
+    next[0] = births;
+    const newTotal = next.reduce((s, v) => s + v, 0);
+    rates.push(total > 0 ? (newTotal - total) / total : 0);
+    N = next;
+  }
+  return rates;
+}
+
 // Shape-only curves (arbitrary scale) — the actual TFR match is enforced afterward
 // by rescaleToTFR, since neither curve's raw formula integrates to the right total
 // once truncated to ages 15-49 and evaluated at discrete single-year steps.
@@ -118,6 +143,22 @@ function autoFitExponential(ages, actualPx) {
 
 function resample(ages, values) { const out = []; for (let a = 0; a <= 100; a++) out.push(lerp(ages, values, a)); return out; }
 
+// Expand a coarse px grid to single-year resolution the SAME way survivorship()
+// interprets it: each grid value is an annual rate held constant across its
+// whole block (survivorship computes l via pxVals[i]^step, i.e. that value
+// applied every year in the block) — not linearly interpolated, which would
+// imply a different (and inconsistent) survival curve under projection.
+function expandPxStepwise(pxAges, pxVals) {
+  const out = new Array(101);
+  for (let age = 0; age <= 100; age++) {
+    let idx = 0;
+    for (let i = 0; i < pxAges.length - 1; i++) { if (age >= pxAges[i]) idx = i; }
+    out[age] = pxVals[idx];
+  }
+  out[100] = 0;
+  return out;
+}
+
 function distStats(resampled) {
   const total = resampled.reduce((s, v) => s + v, 0);
   const youth = resampled.slice(0, 15).reduce((s, v) => s + v, 0);
@@ -148,12 +189,29 @@ document.addEventListener('DOMContentLoaded', function () {
   const survFitForm = $('demo-surv-fit-form'), gompertzControls = $('demo-gompertz-controls'), expControls = $('demo-exp-controls');
   const gA = $('demo-gA'), gB = $('demo-gB'), gA_out = $('demo-gA-out'), gB_out = $('demo-gB-out');
   const expMu = $('demo-expMu'), expMu_out = $('demo-expMu-out');
+  const tabDist = $('demo-tab-dist'), tabGrowth = $('demo-tab-growth'), panelDist = $('demo-panel-dist'), panelGrowth = $('demo-panel-growth');
 
   Object.keys(DEMO_DATA).forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; compareCountry.appendChild(o); });
   compareCountry.value = 'Niger';
 
+  function setTab(active) {
+    const isDist = active === 'dist';
+    panelDist.style.display = isDist ? 'block' : 'none';
+    panelGrowth.style.display = isDist ? 'none' : 'block';
+    tabDist.style.background = isDist ? '#7a1f2b' : 'transparent';
+    tabDist.style.color = isDist ? '#fffdf9' : '#5f5e5a';
+    tabDist.style.borderColor = isDist ? '#7a1f2b' : '#e6ddce';
+    tabGrowth.style.background = isDist ? 'transparent' : '#7a1f2b';
+    tabGrowth.style.color = isDist ? '#5f5e5a' : '#fffdf9';
+    tabGrowth.style.borderColor = isDist ? '#e6ddce' : '#7a1f2b';
+  }
+  tabDist.addEventListener('click', () => setTab('dist'));
+  tabGrowth.addEventListener('click', () => setTab('growth'));
+
   let charts = {};
-  function upsertChart(key, canvasId, datasets, yMax, xMin, xMax) {
+  function upsertChart(key, canvasId, datasets, yMax, xMin, xMax, xLabel, beginAtZero) {
+    xLabel = xLabel || 'Age';
+    if (beginAtZero === undefined) beginAtZero = true;
     if (!charts[key]) {
       charts[key] = new Chart(document.getElementById(canvasId), {
         type: 'line',
@@ -162,14 +220,16 @@ document.addEventListener('DOMContentLoaded', function () {
           responsive: true, maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            x: { type: 'linear', min: xMin, max: xMax, title: { display: true, text: 'Age', font: { size: 11 } }, ticks: { font: { size: 10 } } },
-            y: { beginAtZero: true, max: yMax, ticks: { font: { size: 10 } } }
+            x: { type: 'linear', min: xMin, max: xMax, title: { display: true, text: xLabel, font: { size: 11 } }, ticks: { font: { size: 10 } } },
+            y: { beginAtZero: beginAtZero, max: yMax, ticks: { font: { size: 10 } } }
           }
         }
       });
     } else {
       charts[key].data.datasets = datasets;
       charts[key].options.scales.y.max = yMax;
+      charts[key].options.scales.y.beginAtZero = beginAtZero;
+      charts[key].options.scales.x.title.text = xLabel;
       charts[key].options.scales.x.min = xMin;
       charts[key].options.scales.x.max = xMax;
       charts[key].update();
@@ -300,10 +360,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const distMax = Math.max(...distDatasets.flatMap(ds => ds.data.map(p => p.y)));
     upsertChart('dist', 'demo-distChart', distDatasets, Math.ceil(distMax * 2) / 2, 0, 100);
+
+    // Growth rate over time — cohort-component projection from the actual current
+    // age distribution, holding ASFR + survival fixed. Converges toward r, but
+    // doesn't start there (population momentum).
+    const projectionYears = 100;
+    const initialDistFull = resample(d.pop_ages, d.pop_by_year[y]);
+    const pxFull = expandPxStepwise(d.px_ages, pxVals);
+    const actualRates = projectGrowthRate(d.asfr_ages, asfrVals, pxFull, initialDistFull, projectionYears);
+    const growthDatasets = [{
+      data: actualRates.map((rate, i) => ({ x: i, y: +(rate * 100).toFixed(3) })),
+      borderColor: COLORS.current, backgroundColor: 'transparent', fill: false, tension: 0.2, pointRadius: 0, borderWidth: 3
+    }];
+    const growthLegendItems = [{ color: COLORS.current, text: `${c}, actual rates — converges to r = ${(actualStable.r * 100).toFixed(2)}%` }];
+
+    if (altAsfrVals || altPxVals) {
+      const effAsfr = altAsfrVals || asfrVals;
+      const effPx = altPxVals || pxVals;
+      const altPxFull = expandPxStepwise(d.px_ages, effPx);
+      const altRates = projectGrowthRate(d.asfr_ages, effAsfr, altPxFull, initialDistFull, projectionYears);
+      const altStableForR = stableDist(d.asfr_ages, effAsfr, d.px_ages, effPx);
+      growthDatasets.push({
+        data: altRates.map((rate, i) => ({ x: i, y: +(rate * 100).toFixed(3) })),
+        borderColor: COLORS.alt, borderDash: [6, 3], fill: false, tension: 0.2, pointRadius: 0, borderWidth: 2
+      });
+      growthLegendItems.push({ color: COLORS.alt, text: `${altLabel} rates — converges to r = ${(altStableForR.r * 100).toFixed(2)}%` });
+    }
+    $('demo-growth-legend').innerHTML = legendHTML(growthLegendItems);
+    upsertChart('growth', 'demo-growthChart', growthDatasets, undefined, 0, projectionYears, 'Years from now', false);
   }
 
   // Context changes trigger a fresh auto-fit; dragging a fit slider yourself just re-renders.
   [countrySel, yearSlider, overlayMode, compareCountry, asfrFitForm, survFitForm].forEach(el => el.addEventListener('input', () => render(true)));
   [hadA, hadB, normMean, normSpread, gA, gB, expMu].forEach(el => el.addEventListener('input', () => render(false)));
+  setTab('dist');
   render(true);
 });

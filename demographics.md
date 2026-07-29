@@ -84,11 +84,26 @@ permalink: /demographics.html
 
 <div style="display:flex; flex-wrap:wrap; gap:16px;">
   <div class="paper-card" style="padding:1em 1.3em; flex:2 1 420px;">
-    <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Age distribution: current vs. implied long-run (stable)</p>
-    <div style="max-width:640px; margin:0 auto;">
-      <div style="position:relative; height:260px;"><canvas id="demo-distChart" role="img" aria-label="Current age distribution compared to stable age distributions implied by actual and alternate vital rates">Age distribution comparison</canvas></div>
+    <div style="display:flex; gap:8px; margin-bottom:10px;">
+      <button id="demo-tab-dist" type="button" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #7a1f2b; background:#7a1f2b; color:#fffdf9; cursor:pointer;">Age distribution</button>
+      <button id="demo-tab-growth" type="button" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Growth rate over time</button>
     </div>
-    <div id="demo-dist-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
+
+    <div id="demo-panel-dist">
+      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Age distribution: current vs. implied long-run (stable)</p>
+      <div style="max-width:640px; margin:0 auto;">
+        <div style="position:relative; height:260px;"><canvas id="demo-distChart" role="img" aria-label="Current age distribution compared to stable age distributions implied by actual and alternate vital rates">Age distribution comparison</canvas></div>
+      </div>
+      <div id="demo-dist-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
+    </div>
+
+    <div id="demo-panel-growth" style="display:none;">
+      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Population growth rate: projected forward under fixed vital rates</p>
+      <div style="max-width:640px; margin:0 auto;">
+        <div style="position:relative; height:260px;"><canvas id="demo-growthChart" role="img" aria-label="Projected population growth rate over the next century, converging toward the implied stable growth rate">Growth rate over time</canvas></div>
+      </div>
+      <div id="demo-growth-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
+    </div>
   </div>
   <div class="paper-card" style="padding:1em 1.3em; flex:1 1 260px;">
     <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 10px;">Summary statistics</p>

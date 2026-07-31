@@ -12,8 +12,7 @@ permalink: /research.html
     <summary>
       <span class="summary-row">
         <span class="paper-title">{{ paper.title }}</span>
-        {% if paper.forthcoming %}<span class="paper-badge">Forthcoming</span>{% endif %}
-        <span class="paper-meta">{{ paper.venue }}{% if paper.venue.size > 0 and paper.coauthors.size > 0 %} &middot; {% endif %}{{ paper.coauthors }}</span>
+        <span class="paper-meta">{{ paper.venue }}{% if paper.venue.size > 0 and paper.coauthors.size > 0 %} &middot; {% endif %}{{ paper.coauthors }}{% if paper.forthcoming %} <span class="paper-badge">(Forthcoming)</span>{% endif %}</span>
       </span>
     </summary>
     <div class="paper-body">

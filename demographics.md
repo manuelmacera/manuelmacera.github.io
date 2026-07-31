@@ -6,7 +6,7 @@ permalink: /demographics.html
 
 <div class="coming-soon" style="margin-bottom:1.5rem;">
   <h2>Global Demographics</h2>
-  <p>Working prototype below — sample data for two countries (Argentina, Niger) while the full country/region dataset is built out. ASFR (age-specific fertility rate) and survival probability are the two primitives; pick up to four country/year combinations to compare across all panels below.</p>
+  <p>Working prototype below — sample data for two countries (Argentina, Niger) while the full country/region dataset is built out. ASFR (age-specific fertility rate) and survival probability are the two primitives; pick up to seven country/year combinations to compare across all panels below.</p>
 </div>
 
 <div style="background:#fffdf9; border:1px solid #e6ddce; border-radius:8px; padding:12px 16px; margin:0 0 1rem; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
@@ -29,7 +29,7 @@ permalink: /demographics.html
     </select>
   </div>
   <button id="pin-add" type="button" style="font-size:13px; font-weight:600; padding:7px 16px; border-radius:6px; border:1px solid #7a1f2b; background:#7a1f2b; color:#fffdf9; cursor:pointer;">Add</button>
-  <span id="pin-limit-note" style="display:none; font-size:12px; color:#898781;">Remove one to add another (max 4)</span>
+  <span id="pin-limit-note" style="display:none; font-size:12px; color:#898781;">Remove one to add another (max 7)</span>
 </div>
 
 <div id="pin-chips" style="display:flex; flex-wrap:wrap; gap:10px; margin:0 0 1.5rem;"></div>
@@ -58,18 +58,28 @@ permalink: /demographics.html
 
 <div style="display:flex; flex-wrap:wrap; gap:16px;">
   <div class="paper-card" style="padding:1em 1.3em; flex:2 1 420px;">
-    <div style="display:flex; gap:8px; margin-bottom:10px;">
-      <button id="demo-tab-dist" type="button" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #7a1f2b; background:#7a1f2b; color:#fffdf9; cursor:pointer;">Age distribution</button>
-      <button id="demo-tab-growth" type="button" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Growth rate over time</button>
+    <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+      <button id="demo-tab-current" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #7a1f2b; background:#7a1f2b; color:#fffdf9; cursor:pointer;">Current age distribution</button>
+      <button id="demo-tab-stable" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Stable age distribution</button>
+      <button id="demo-tab-growth" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Growth rate over time</button>
     </div>
 
-    <div id="demo-panel-dist">
-      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Age distribution: current (solid) vs. implied long-run stable (dashed)</p>
+    <div id="demo-panel-current">
+      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Current age distribution (UN WPP)</p>
       <div style="max-width:640px; margin:0 auto;">
-        <div style="position:relative; height:260px;"><canvas id="demo-distChart" role="img" aria-label="Current age distribution compared to the implied stable age distribution for each pinned country and year">Age distribution comparison</canvas></div>
+        <div style="position:relative; height:260px;"><canvas id="demo-currentChart" role="img" aria-label="Current age distribution for each pinned country and year">Current age distribution</canvas></div>
       </div>
-      <div id="demo-dist-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
-      <p id="demo-dist-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
+      <div id="demo-current-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
+      <p id="demo-current-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
+    </div>
+
+    <div id="demo-panel-stable" style="display:none;">
+      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Implied long-run stable age distribution</p>
+      <div style="max-width:640px; margin:0 auto;">
+        <div style="position:relative; height:260px;"><canvas id="demo-stableChart" role="img" aria-label="Implied stable age distribution for each pinned country and year">Stable age distribution</canvas></div>
+      </div>
+      <div id="demo-stable-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
+      <p id="demo-stable-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
     </div>
 
     <div id="demo-panel-growth" style="display:none;">
@@ -82,8 +92,12 @@ permalink: /demographics.html
     </div>
   </div>
   <div class="paper-card" style="padding:1em 1.3em; flex:1 1 260px;">
-    <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 10px;">Summary statistics</p>
-    <div id="demo-stats" style="font-size:12px;"></div>
+    <div style="display:flex; gap:8px; margin-bottom:10px;">
+      <button id="demo-stats-tab-current" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #7a1f2b; background:#7a1f2b; color:#fffdf9; cursor:pointer;">Current</button>
+      <button id="demo-stats-tab-stable" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Stable</button>
+    </div>
+    <div id="demo-stats-current" style="font-size:12px;"></div>
+    <div id="demo-stats-stable" style="font-size:12px; display:none;"></div>
   </div>
 </div>
 

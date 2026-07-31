@@ -3,8 +3,8 @@
 // the full build will cover all UN WPP locations at annual/single-year-of-age resolution.
 const DEMO_DATA = {"Argentina":{"asfr_ages":[15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49],"px_ages":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100],"pop_ages":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100],"asfr_by_year":{"1950":[17.112,34.389,57.141,83.787,108.593,130.208,149.619,166.505,179.525,188.0,190.517,186.771,179.394,169.154,157.031,143.199,130.756,119.851,111.573,105.419,99.096,89.979,80.112,69.576,57.76,43.527,32.567,23.449,16.227,10.883,8.248,5.877,4.283,3.143,1.98],"1970":[20.019,38.541,62.287,89.499,113.938,134.063,150.136,162.247,171.234,177.076,178.941,176.638,171.279,163.261,153.306,141.735,130.155,118.869,108.569,99.2,90.023,80.485,71.079,61.814,52.431,42.765,33.839,25.609,18.572,12.877,8.693,5.878,3.953,2.692,1.611],"1990":[23.055,44.585,70.616,98.747,121.654,137.969,150.137,158.834,165.652,170.697,172.964,172.081,168.553,162.51,154.12,143.561,132.186,120.358,109.08,98.41,87.774,76.745,66.13,55.982,45.933,35.778,26.934,19.259,13.008,8.244,4.923,3.022,1.761,0.95,0.437],"2000":[21.676,41.966,65.757,90.535,108.986,119.856,125.816,127.943,129.127,130.051,130.832,131.411,131.598,131.113,128.924,124.821,118.737,110.91,102.283,93.043,83.122,72.572,62.303,52.456,42.791,33.195,24.756,17.43,11.54,7.142,3.929,2.27,1.149,0.419,0.057],"2010":[22.049,42.974,66.962,91.207,107.833,115.584,117.678,115.507,112.801,110.597,109.717,110.3,111.977,114.262,115.365,114.799,111.82,106.547,99.864,91.965,82.904,72.729,62.596,52.701,42.842,32.837,24.196,16.764,10.895,6.62,3.474,1.879,0.874,0.309,0.042],"2020":[9.406,18.66,30.468,43.8,55.075,63.485,69.261,72.634,74.581,75.467,75.927,76.256,77.078,78.298,78.882,78.479,76.928,74.267,71.157,67.553,62.859,56.51,49.748,42.744,35.29,27.069,20.116,14.079,9.223,5.58,2.941,1.413,0.535,0.171,0.023]},"px_by_year":{"1950":[0.928,0.998,0.999,0.999,0.998,0.998,0.998,0.997,0.997,0.996,0.995,0.993,0.991,0.988,0.984,0.98,0.974,0.959,0.933,0.895,0.824,0.75,0.669,0.569,0.485,0.0],"1970":[0.948,0.999,0.999,0.999,0.999,0.999,0.998,0.998,0.998,0.997,0.996,0.995,0.993,0.99,0.987,0.983,0.978,0.965,0.945,0.919,0.871,0.816,0.751,0.672,0.59,0.0],"1990":[0.974,0.999,1.0,1.0,0.999,0.999,0.999,0.999,0.999,0.998,0.997,0.996,0.995,0.993,0.989,0.985,0.98,0.973,0.963,0.942,0.908,0.866,0.816,0.753,0.683,0.0],"2000":[0.981,1.0,1.0,1.0,0.999,0.999,0.999,0.999,0.999,0.998,0.998,0.997,0.996,0.993,0.991,0.987,0.983,0.976,0.966,0.952,0.928,0.895,0.852,0.8,0.739,0.0],"2010":[0.987,1.0,1.0,1.0,0.999,0.999,0.999,0.999,0.999,0.999,0.998,0.997,0.996,0.995,0.992,0.989,0.985,0.979,0.97,0.956,0.934,0.905,0.867,0.815,0.754,0.0],"2020":[0.99,1.0,1.0,1.0,1.0,0.999,0.999,0.999,0.999,0.999,0.998,0.997,0.996,0.995,0.992,0.988,0.983,0.976,0.967,0.955,0.935,0.906,0.869,0.82,0.759,0.0]},"pop_by_year":{"1950":[2.453,2.2,1.989,1.85,1.816,1.835,1.793,1.669,1.518,1.463,1.356,1.23,1.09,0.92,0.766,0.631,0.49,0.346,0.23,0.14,0.081,0.041,0.016,0.005,0.001,0.001],"1970":[2.211,1.969,1.949,1.882,1.836,1.741,1.615,1.457,1.349,1.31,1.303,1.247,1.134,1.003,0.922,0.802,0.677,0.543,0.393,0.259,0.146,0.059,0.015,0.003,0.0,0.0],"1990":[2.14,2.036,2.03,1.992,1.78,1.581,1.46,1.448,1.387,1.338,1.252,1.143,1.014,0.913,0.854,0.809,0.728,0.61,0.483,0.369,0.235,0.124,0.049,0.014,0.002,0.001],"2000":[1.905,1.911,1.902,1.821,1.772,1.767,1.641,1.447,1.299,1.269,1.226,1.171,1.102,1.011,0.88,0.764,0.679,0.607,0.535,0.419,0.297,0.182,0.088,0.031,0.008,0.003],"2010":[1.796,1.709,1.685,1.69,1.732,1.665,1.581,1.566,1.529,1.361,1.204,1.108,1.091,1.028,0.966,0.871,0.759,0.63,0.52,0.425,0.328,0.222,0.124,0.054,0.017,0.008],"2020":[1.271,1.645,1.63,1.592,1.532,1.549,1.557,1.544,1.468,1.418,1.408,1.303,1.14,1.011,0.968,0.907,0.826,0.728,0.614,0.478,0.35,0.238,0.141,0.07,0.025,0.015]}},"Niger":{"asfr_ages":[15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49],"px_ages":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100],"pop_ages":[0,4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100],"asfr_by_year":{"1950":[102.807,167.079,225.0,270.382,298.146,309.515,313.493,313.147,311.546,309.716,309.053,309.495,308.889,306.882,304.021,300.387,294.678,286.681,275.64,261.909,247.335,233.111,217.39,200.137,182.542,164.893,143.521,119.458,96.909,76.993,60.215,47.003,36.028,26.635,16.993],"1970":[100.095,160.041,212.629,252.481,277.367,288.841,293.745,294.739,294.509,294.144,295.612,299.062,301.675,302.967,303.494,303.388,300.309,294.045,283.629,269.627,254.602,240.76,225.483,208.737,192.055,176.183,154.952,129.966,106.041,84.489,65.52,50.835,38.734,28.572,18.266],"1990":[98.542,165.088,227.423,278.671,310.115,322.548,328.465,331.25,333.592,335.95,337.789,338.163,334.876,327.833,318.946,308.723,297.828,286.177,273.098,258.81,244.741,231.288,216.423,199.99,183.105,165.668,145.062,121.882,100.226,81.124,65.87,52.492,41.175,31.207,20.326],"2000":[100.366,163.015,220.4,266.685,297.029,312.567,321.855,327.287,329.597,329.268,327.822,325.417,322.596,319.454,315.991,311.493,306.09,299.253,291.822,283.409,272.801,256.82,237.509,215.177,190.539,161.557,135.405,110.149,88.787,71.823,61.386,50.513,40.818,31.439,20.564],"2010":[85.072,148.298,210.772,265.42,299.617,313.317,320.69,324.972,327.934,329.824,330.269,328.468,324.549,318.624,311.351,302.442,294.003,285.656,277.731,269.728,260.387,246.543,229.607,209.7,187.264,160.436,135.587,111.087,89.935,72.689,61.918,50.378,40.432,31.23,20.5],"2020":[57.18,106.097,159.392,211.232,247.587,266.499,275.51,277.281,278.011,279.182,281.225,283.509,283.905,281.953,277.858,271.514,262.544,250.976,237.619,222.872,207.797,192.28,175.907,158.788,141.924,124.529,107.334,89.84,74.765,62.513,54.688,45.415,37.199,29.4,19.762]},"px_by_year":{"1950":[0.875,0.973,0.993,0.995,0.993,0.99,0.989,0.989,0.989,0.988,0.987,0.986,0.984,0.98,0.975,0.964,0.948,0.929,0.895,0.851,0.792,0.711,0.622,0.545,0.476,0.0],"1970":[0.873,0.974,0.994,0.995,0.993,0.991,0.989,0.989,0.989,0.988,0.987,0.986,0.984,0.98,0.975,0.965,0.95,0.931,0.899,0.856,0.799,0.719,0.632,0.559,0.489,0.0],"1990":[0.874,0.984,0.997,0.997,0.996,0.995,0.994,0.994,0.994,0.993,0.992,0.991,0.99,0.987,0.983,0.976,0.966,0.952,0.927,0.892,0.844,0.777,0.696,0.606,0.53,0.0],"2000":[0.897,0.988,0.997,0.998,0.997,0.996,0.995,0.995,0.995,0.994,0.993,0.992,0.991,0.988,0.984,0.978,0.968,0.955,0.931,0.898,0.849,0.788,0.709,0.61,0.534,0.0],"2010":[0.926,0.993,0.998,0.998,0.998,0.997,0.996,0.996,0.996,0.995,0.995,0.994,0.992,0.99,0.986,0.981,0.972,0.96,0.939,0.908,0.861,0.801,0.723,0.623,0.548,0.0],"2020":[0.933,0.995,0.999,0.999,0.998,0.998,0.997,0.997,0.997,0.997,0.996,0.994,0.993,0.99,0.987,0.981,0.973,0.96,0.94,0.911,0.868,0.807,0.715,0.604,0.503,0.0]},"pop_by_year":{"1950":[5.252,3.615,3.047,2.583,2.208,1.87,1.604,1.399,1.212,1.037,0.872,0.714,0.57,0.449,0.343,0.194,0.104,0.077,0.043,0.041,0.022,0.007,0.001,0.0,0.0,0.0],"1970":[5.025,3.365,2.919,2.565,2.242,1.901,1.677,1.418,1.165,0.971,0.811,0.691,0.596,0.503,0.413,0.324,0.236,0.157,0.094,0.046,0.014,0.003,0.0,0.0,0.0,0.0],"1990":[4.975,3.267,2.851,2.475,2.131,1.859,1.637,1.433,1.227,1.046,0.873,0.764,0.64,0.514,0.414,0.329,0.256,0.191,0.13,0.075,0.035,0.012,0.002,0.0,0.0,0.0],"2000":[4.901,3.456,2.822,2.407,2.118,1.854,1.568,1.345,1.178,1.035,0.892,0.756,0.636,0.516,0.452,0.352,0.266,0.195,0.132,0.081,0.041,0.015,0.004,0.001,0.0,0.0],"2010":[4.598,3.668,3.078,2.564,2.099,1.746,1.496,1.305,1.112,0.944,0.816,0.714,0.619,0.52,0.43,0.342,0.28,0.208,0.14,0.084,0.043,0.017,0.005,0.001,0.0,0.0],"2020":[4.013,3.476,3.09,2.702,2.303,1.928,1.579,1.296,1.089,0.942,0.814,0.681,0.578,0.497,0.425,0.351,0.278,0.211,0.145,0.098,0.051,0.02,0.006,0.001,0.0,0.0]}}};
 
-const PIN_COLORS = ['#7a1f2b', '#c9973a', '#2c5f7c', '#3b6d11'];
-const MAX_PINS = 4;
+const PIN_COLORS = ['#7a1f2b', '#c9973a', '#2c5f7c', '#3b6d11', '#6b3fa0', '#b6452c', '#1a7a6e'];
+const MAX_PINS = 7;
 const PROJECTION_END_YEAR = 2100;
 
 function lerp(xs, ys, x) {
@@ -109,25 +109,47 @@ function toPoints(ages, values) { return ages.map((a, i) => ({ x: a, y: values[i
 document.addEventListener('DOMContentLoaded', function () {
   const $ = id => document.getElementById(id);
   const pinCountry = $('pin-country'), pinYear = $('pin-year'), pinAdd = $('pin-add'), pinLimitNote = $('pin-limit-note'), pinChips = $('pin-chips');
-  const tabDist = $('demo-tab-dist'), tabGrowth = $('demo-tab-growth'), panelDist = $('demo-panel-dist'), panelGrowth = $('demo-panel-growth');
 
   let pins = [];
   let charts = {};
 
-  function setTab(active) {
-    const isDist = active === 'dist';
-    panelDist.style.display = isDist ? 'block' : 'none';
-    panelGrowth.style.display = isDist ? 'none' : 'block';
-    tabDist.style.background = isDist ? '#7a1f2b' : 'transparent';
-    tabDist.style.color = isDist ? '#fffdf9' : '#5f5e5a';
-    tabDist.style.borderColor = isDist ? '#7a1f2b' : '#e6ddce';
-    tabGrowth.style.background = isDist ? 'transparent' : '#7a1f2b';
-    tabGrowth.style.color = isDist ? '#5f5e5a' : '#fffdf9';
-    tabGrowth.style.borderColor = isDist ? '#e6ddce' : '#7a1f2b';
+  // Generic 3-way (or N-way) tab switcher: pass {tabId: panelId} pairs and
+  // the currently active tabId; toggles button styling + panel visibility.
+  // Charts built while their panel is display:none get stuck at zero size
+  // (no ResizeObserver fires for hidden ancestors), so an optional onShow
+  // callback lets callers force a chart.resize() once the panel reappears.
+  function makeTabSwitcher(pairs, onShow) {
+    const buttons = {}, panels = {};
+    Object.keys(pairs).forEach(tabId => { buttons[tabId] = $(tabId); panels[tabId] = $(pairs[tabId]); });
+    function set(active) {
+      Object.keys(pairs).forEach(tabId => {
+        const isActive = tabId === active;
+        panels[tabId].style.display = isActive ? 'block' : 'none';
+        buttons[tabId].style.background = isActive ? '#7a1f2b' : 'transparent';
+        buttons[tabId].style.color = isActive ? '#fffdf9' : '#5f5e5a';
+        buttons[tabId].style.borderColor = isActive ? '#7a1f2b' : '#e6ddce';
+      });
+      if (onShow) onShow(active);
+    }
+    Object.keys(pairs).forEach(tabId => buttons[tabId].addEventListener('click', () => set(tabId)));
+    return set;
   }
-  tabDist.addEventListener('click', () => setTab('dist'));
-  tabGrowth.addEventListener('click', () => setTab('growth'));
-  setTab('dist');
+  // A chart built while its panel is display:none gets stuck at zero size —
+  // Chart.js's ResizeObserver never fires for hidden ancestors, and even an
+  // explicit chart.resize() afterward doesn't recover it. So instead of
+  // resizing, destroy + rebuild the dist charts on every tab switch: whichever
+  // one is now visible gets created fresh, at its correct size.
+  const setDistTab = makeTabSwitcher({
+    'demo-tab-current': 'demo-panel-current',
+    'demo-tab-stable': 'demo-panel-stable',
+    'demo-tab-growth': 'demo-panel-growth'
+  }, () => { ['current', 'stable', 'growth'].forEach(destroyChart); renderAll(); });
+  const setStatsTab = makeTabSwitcher({
+    'demo-stats-tab-current': 'demo-stats-current',
+    'demo-stats-tab-stable': 'demo-stats-stable'
+  });
+  setDistTab('demo-tab-current');
+  setStatsTab('demo-stats-tab-current');
 
   function renderChips() {
     pinChips.innerHTML = pins.map((p, i) => `
@@ -186,13 +208,21 @@ document.addEventListener('DOMContentLoaded', function () {
     $(`demo-${prefix}-legend`).style.display = isEmpty ? 'none' : 'flex';
   }
 
+  function statsTableHTML(rows) {
+    return '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>'
+      + rows.join('')
+      + '</tbody></table>'
+      + '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.6;">Median age: age below which half the (modeled) population falls.<br>Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64.<br>Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';
+  }
+
   function renderAll() {
     if (pins.length === 0) {
-      ['asfr', 'px', 'dist', 'growth'].forEach(k => { destroyChart(k); toggleEmpty(k, true); });
-      $('demo-stats').innerHTML = '';
+      ['asfr', 'px', 'current', 'stable', 'growth'].forEach(k => { destroyChart(k); toggleEmpty(k, true); });
+      $('demo-stats-current').innerHTML = '';
+      $('demo-stats-stable').innerHTML = '';
       return;
     }
-    ['asfr', 'px', 'dist', 'growth'].forEach(k => toggleEmpty(k, false));
+    ['asfr', 'px', 'current', 'stable', 'growth'].forEach(k => toggleEmpty(k, false));
 
     const pinData = pins.map(p => ({ ...p, d: DEMO_DATA[p.country], asfrVals: DEMO_DATA[p.country].asfr_by_year[p.year], pxVals: DEMO_DATA[p.country].px_by_year[p.year], popVals: DEMO_DATA[p.country].pop_by_year[p.year] }));
 
@@ -209,31 +239,27 @@ document.addEventListener('DOMContentLoaded', function () {
     $('demo-px-legend').innerHTML = legendHTML(pxLegend);
     upsertChart('px', 'demo-pxChart', pxDatasets, 1, 0, 100);
 
-    // Age distribution: current (solid) + stable implied (dashed), per pin
-    const distDatasets = [];
-    const distLegend = [];
-    const statRows = [];
-    pinData.forEach((p, i) => {
-      const popTotal = p.popVals.reduce((s, v) => s + v, 0);
-      distDatasets.push({ data: toPoints(p.d.pop_ages, p.popVals), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 3 });
-      distLegend.push({ color: PIN_COLORS[i], text: `${p.country}, ${p.year} — current` });
-      statRows.push(statRow(`${p.country}, ${p.year} — current`, PIN_COLORS[i], distStats(resample(p.d.pop_ages, p.popVals))));
+    // Current age distribution — one line per pin
+    const currentDatasets = pinData.map((p, i) => ({ data: toPoints(p.d.pop_ages, p.popVals), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }));
+    const currentLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.country}, ${p.year}` }));
+    $('demo-current-legend').innerHTML = legendHTML(currentLegend);
+    const currentMax = Math.max(...currentDatasets.flatMap(ds => ds.data.map(pt => pt.y)));
+    upsertChart('current', 'demo-currentChart', currentDatasets, Math.ceil(currentMax * 2) / 2, 0, 100);
+    $('demo-stats-current').innerHTML = statsTableHTML(pinData.map((p, i) => statRow(`${p.country}, ${p.year}`, PIN_COLORS[i], distStats(resample(p.d.pop_ages, p.popVals)))));
 
+    // Stable (implied long-run) age distribution — one line per pin
+    const stableResults = pinData.map(p => {
+      const popTotal = p.popVals.reduce((s, v) => s + v, 0);
       const stable = stableDist(p.d.asfr_ages, p.asfrVals, p.d.px_ages, p.pxVals);
       const stableTotal = stable.values.reduce((s, v) => s + v, 0);
-      distDatasets.push({ data: toPoints(stable.ages, stable.values.map(v => +(v / stableTotal * popTotal).toFixed(3))), borderColor: PIN_COLORS[i], borderDash: [6, 3], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 });
-      distLegend.push({ color: PIN_COLORS[i], text: `${p.country}, ${p.year} — stable (dashed)` });
-      statRows.push(statRow(`${p.country}, ${p.year} — stable`, PIN_COLORS[i], distStats(resample(stable.ages, stable.values))));
+      return { ...stable, scaledValues: stable.values.map(v => +(v / stableTotal * popTotal).toFixed(3)) };
     });
-    $('demo-dist-legend').innerHTML = legendHTML(distLegend);
-    const distMax = Math.max(...distDatasets.flatMap(ds => ds.data.map(pt => pt.y)));
-    upsertChart('dist', 'demo-distChart', distDatasets, Math.ceil(distMax * 2) / 2, 0, 100);
-
-    let statsHTML = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>';
-    statsHTML += statRows.join('');
-    statsHTML += '</tbody></table>';
-    statsHTML += '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.6;">Median age: age below which half the (modeled) population falls.<br>Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64.<br>Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';
-    $('demo-stats').innerHTML = statsHTML;
+    const stableDatasets = pinData.map((p, i) => ({ data: toPoints(stableResults[i].ages, stableResults[i].scaledValues), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }));
+    const stableLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.country}, ${p.year}` }));
+    $('demo-stable-legend').innerHTML = legendHTML(stableLegend);
+    const stableMax = Math.max(...stableDatasets.flatMap(ds => ds.data.map(pt => pt.y)));
+    upsertChart('stable', 'demo-stableChart', stableDatasets, Math.ceil(stableMax * 2) / 2, 0, 100);
+    $('demo-stats-stable').innerHTML = statsTableHTML(pinData.map((p, i) => statRow(`${p.country}, ${p.year}`, PIN_COLORS[i], distStats(resample(stableResults[i].ages, stableResults[i].values)))));
 
     // Growth rate: each pin's projection runs from its own year through 2100
     const minYear = Math.min(...pinData.map(p => +p.year));

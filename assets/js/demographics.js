@@ -125,6 +125,15 @@ document.addEventListener('DOMContentLoaded', function () {
   let pins = [];
   let charts = {};
   let renderSeq = 0;
+  const chartMeta = {}; // key -> {title, legend} captured each render, for PNG export
+
+  const TITLES = {
+    asfr: $('demo-asfr-title')?.textContent || '',
+    px: $('demo-px-title')?.textContent || '',
+    current: $('demo-current-title')?.textContent || '',
+    stable: $('demo-stable-title')?.textContent || '',
+    growth: $('demo-growth-title')?.textContent || '',
+  };
 
   // Generic 3-way (or N-way) tab switcher: pass {tabId: panelId} pairs and
   // the currently active tabId; toggles button styling + panel visibility.
@@ -183,14 +192,24 @@ document.addEventListener('DOMContentLoaded', function () {
   // the sort order the build script already wrote into meta.json.
   function populateSelectors() {
     // Full year-by-year list is 151 entries -- too dense to be useful in a
-    // plain <select>. Show decades plus the WPP "last estimate" year (the
-    // boundary between historical data and the Medium-variant projection;
-    // everything after it is projected, not observed) instead.
+    // plain <select>. Show decades plus the WPP "last available" year (the
+    // boundary between historical data and the Medium-variant projection)
+    // instead. Everything after that year is projected under the Medium
+    // scenario, not observed, so it's marked "(p)" -- and the final year in
+    // the dataset is dropped from the list entirely, since pinning it would
+    // leave the growth-rate projection with nowhere to run (it projects
+    // forward from the pinned year through the dataset's last year).
     const lastEstimate = META.last_estimate_year;
-    const yearSet = new Set(META.years.filter(y => y % 10 === 0));
+    const maxYear = Math.max(...META.years);
+    const yearSet = new Set(META.years.filter(y => y % 10 === 0 && y !== maxYear));
     if (lastEstimate) yearSet.add(lastEstimate);
     const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
-    pinYear.innerHTML = sortedYears.map(y => `<option value="${y}">${y}${y === lastEstimate ? ' (latest estimate)' : ''}</option>`).join('');
+    pinYear.innerHTML = sortedYears.map(y => {
+      let suffix = '';
+      if (y === lastEstimate) suffix = ' (last available)';
+      else if (lastEstimate && y > lastEstimate) suffix = ' (p)';
+      return `<option value="${y}">${y}${suffix}</option>`;
+    }).join('');
     const byGroup = {};
     META.locations.forEach(loc => { (byGroup[loc.group] = byGroup[loc.group] || []).push(loc); });
     const optionHTML = loc => `<option value="${loc.id}">${loc.name}</option>`;
@@ -252,25 +271,79 @@ document.addEventListener('DOMContentLoaded', function () {
     if (downloadBtn) downloadBtn.style.display = isEmpty ? 'none' : 'inline-block';
   }
 
-  // Chart.js canvases are transparent by default; composite onto an opaque
-  // background matching the site's card color so the downloaded PNG doesn't
-  // go illegible if opened against a dark background.
-  function downloadChartPNG(canvasId, filename) {
+  function wrapText(ctx, text, maxWidth) {
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    words.forEach(word => {
+      const candidate = line ? `${line} ${word}` : word;
+      if (line && ctx.measureText(candidate).width > maxWidth) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = candidate;
+      }
+    });
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  // Chart.js canvases are transparent and don't include the title or legend
+  // (those are separate DOM elements) -- so exporting just the canvas would
+  // leave a PNG with no context. Composite title + chart + legend onto one
+  // opaque canvas instead, at the chart's own (device-pixel-ratio-scaled)
+  // resolution so it stays crisp.
+  function downloadChartPNG(key, canvasId, filename) {
     const source = document.getElementById(canvasId);
+    const meta = chartMeta[key] || {};
+    const title = meta.title || '';
+    const legend = meta.legend || [];
+    const dpr = window.devicePixelRatio || 1;
+    const pad = Math.round(16 * dpr);
+    const titleFont = Math.round(15 * dpr);
+    const legendFont = Math.round(12 * dpr);
+    const legendLineH = Math.round(20 * dpr);
+    const titleLineH = Math.round(titleFont * 1.3);
+
+    const scratch = document.createElement('canvas').getContext('2d');
+    scratch.font = `bold ${titleFont}px Georgia, serif`;
+    const titleLines = title ? wrapText(scratch, title, source.width - pad * 2) : [];
+    const titleH = titleLines.length ? titleLines.length * titleLineH + pad : 0;
+    const legendH = legend.length ? legend.length * legendLineH + Math.round(pad / 2) : 0;
+
     const out = document.createElement('canvas');
     out.width = source.width;
-    out.height = source.height;
+    out.height = titleH + source.height + legendH;
     const ctx = out.getContext('2d');
     ctx.fillStyle = '#fffdf9';
     ctx.fillRect(0, 0, out.width, out.height);
-    ctx.drawImage(source, 0, 0);
+
+    let y = Math.round(pad / 2);
+    ctx.fillStyle = '#3d3c39';
+    ctx.font = `bold ${titleFont}px Georgia, serif`;
+    ctx.textBaseline = 'top';
+    titleLines.forEach(line => { ctx.fillText(line, pad, y); y += titleLineH; });
+
+    ctx.drawImage(source, 0, titleH);
+
+    let ly = titleH + source.height + Math.round(pad / 4);
+    legend.forEach(item => {
+      const boxSize = Math.round(legendFont * 0.8);
+      ctx.fillStyle = item.color;
+      ctx.fillRect(pad, ly + (legendLineH - boxSize) / 2, boxSize, boxSize);
+      ctx.fillStyle = '#5f5e5a';
+      ctx.font = `${legendFont}px -apple-system, Helvetica, Arial, sans-serif`;
+      ctx.fillText(item.text, pad + boxSize + 8, ly + (legendLineH - legendFont) / 2);
+      ly += legendLineH;
+    });
+
     const link = document.createElement('a');
     link.href = out.toDataURL('image/png');
     link.download = filename;
     link.click();
   }
   document.querySelectorAll('.demo-download').forEach(btn => {
-    btn.addEventListener('click', () => downloadChartPNG(btn.dataset.canvas, btn.dataset.filename));
+    btn.addEventListener('click', () => downloadChartPNG(btn.dataset.key, btn.dataset.canvas, btn.dataset.filename));
   });
 
   function statsTableHTML(rows) {
@@ -312,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const asfrDatasets = pinData.map((p, i) => ({ data: toPoints(META.asfr_ages, p.asfrVals), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }));
     const asfrLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.name}, ${p.year}` }));
     $('demo-asfr-legend').innerHTML = legendHTML(asfrLegend);
+    chartMeta.asfr = { title: TITLES.asfr, legend: asfrLegend };
     const asfrMax = Math.max(...asfrDatasets.flatMap(ds => ds.data.map(pt => pt.y)));
     upsertChart('asfr', 'demo-asfrChart', asfrDatasets, Math.ceil(asfrMax / 20) * 20, 15, 49);
 
@@ -319,12 +393,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const pxDatasets = pinData.map((p, i) => ({ data: toPoints(META.px_ages, survivorship(META.px_ages, p.pxVals)), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }));
     const pxLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.name}, ${p.year}` }));
     $('demo-px-legend').innerHTML = legendHTML(pxLegend);
+    chartMeta.px = { title: TITLES.px, legend: pxLegend };
     upsertChart('px', 'demo-pxChart', pxDatasets, 1, 0, 100);
 
     // Current age distribution — one line per pin
     const currentDatasets = pinData.map((p, i) => ({ data: toPoints(META.pop_ages, p.popVals), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }));
     const currentLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.name}, ${p.year}` }));
     $('demo-current-legend').innerHTML = legendHTML(currentLegend);
+    chartMeta.current = { title: TITLES.current, legend: currentLegend };
     const currentMax = Math.max(...currentDatasets.flatMap(ds => ds.data.map(pt => pt.y)));
     upsertChart('current', 'demo-currentChart', currentDatasets, Math.ceil(currentMax * 2) / 2, 0, 100, 'Age', true, '% of population');
     $('demo-stats-current').innerHTML = statsTableHTML(pinData.map((p, i) => statRow(`${p.name}, ${p.year}`, PIN_COLORS[i], distStats(resample(META.pop_ages, p.popVals)))));
@@ -339,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const stableDatasets = pinData.map((p, i) => ({ data: toPoints(stableResults[i].ages, stableResults[i].scaledValues), borderColor: PIN_COLORS[i], backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 0, borderWidth: 2 }));
     const stableLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.name}, ${p.year}` }));
     $('demo-stable-legend').innerHTML = legendHTML(stableLegend);
+    chartMeta.stable = { title: TITLES.stable, legend: stableLegend };
     const stableMax = Math.max(...stableDatasets.flatMap(ds => ds.data.map(pt => pt.y)));
     upsertChart('stable', 'demo-stableChart', stableDatasets, Math.ceil(stableMax * 2) / 2, 0, 100, 'Age', true, '% of population');
     $('demo-stats-stable').innerHTML = statsTableHTML(pinData.map((p, i) => statRow(`${p.name}, ${p.year}`, PIN_COLORS[i], distStats(resample(stableResults[i].ages, stableResults[i].values)))));
@@ -355,6 +432,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     const growthLegend = pinData.map((p, i) => ({ color: PIN_COLORS[i], text: `${p.name}, ${p.year} — converges to r = ${(growthDatasets[i].r * 100).toFixed(2)}%` }));
     $('demo-growth-legend').innerHTML = legendHTML(growthLegend);
+    chartMeta.growth = { title: TITLES.growth, legend: growthLegend };
     upsertChart('growth', 'demo-growthChart', growthDatasets, undefined, minYear, PROJECTION_END_YEAR, 'Year', false);
   }
 

@@ -6,27 +6,17 @@ permalink: /demographics.html
 
 <div class="coming-soon" style="margin-bottom:1.5rem;">
   <h2>Global Demographics</h2>
-  <p>Working prototype below — sample data for two countries (Argentina, Niger) while the full country/region dataset is built out. ASFR (age-specific fertility rate) and survival probability are the two primitives; pick up to seven country/year combinations to compare across all panels below.</p>
+  <p>Explore every country, income group, development group, and the world as a whole, for every year from 1950 to 2100 (UN World Population Prospects, 2024 revision, medium variant). ASFR (age-specific fertility rate) and survival probability are the two primitives; pick up to seven country/year combinations to compare across all panels below.</p>
 </div>
 
 <div style="background:#fffdf9; border:1px solid #e6ddce; border-radius:8px; padding:12px 16px; margin:0 0 1rem; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
   <div>
-    <label style="font-size:13px; color:#5f5e5a; display:block; margin-bottom:4px;">Country</label>
-    <select id="pin-country" style="min-width:150px;">
-      <option value="Argentina">Argentina</option>
-      <option value="Niger">Niger</option>
-    </select>
+    <label style="font-size:13px; color:#5f5e5a; display:block; margin-bottom:4px;">Country / group</label>
+    <select id="pin-country" style="min-width:220px;"></select>
   </div>
   <div>
     <label style="font-size:13px; color:#5f5e5a; display:block; margin-bottom:4px;">Year</label>
-    <select id="pin-year" style="min-width:100px;">
-      <option value="1950">1950</option>
-      <option value="1970">1970</option>
-      <option value="1990">1990</option>
-      <option value="2000">2000</option>
-      <option value="2010">2010</option>
-      <option value="2020">2020</option>
-    </select>
+    <select id="pin-year" style="min-width:100px;"></select>
   </div>
   <button id="pin-add" type="button" style="font-size:13px; font-weight:600; padding:7px 16px; border-radius:6px; border:1px solid #7a1f2b; background:#7a1f2b; color:#fffdf9; cursor:pointer;">Add</button>
   <span id="pin-limit-note" style="display:none; font-size:12px; color:#898781;">Remove one to add another (max 7)</span>
@@ -65,7 +55,7 @@ permalink: /demographics.html
     </div>
 
     <div id="demo-panel-current">
-      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Current age distribution (UN WPP)</p>
+      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Current age distribution (% of population, UN WPP)</p>
       <div style="max-width:640px; margin:0 auto;">
         <div style="position:relative; height:260px;"><canvas id="demo-currentChart" role="img" aria-label="Current age distribution for each pinned country and year">Current age distribution</canvas></div>
       </div>
@@ -74,7 +64,7 @@ permalink: /demographics.html
     </div>
 
     <div id="demo-panel-stable" style="display:none;">
-      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Implied long-run stable age distribution</p>
+      <p style="font-size:13px; font-weight:700; color:#3d3c39; margin:0 0 6px;">Implied long-run stable age distribution (% of population)</p>
       <div style="max-width:640px; margin:0 auto;">
         <div style="position:relative; height:260px;"><canvas id="demo-stableChart" role="img" aria-label="Implied stable age distribution for each pinned country and year">Stable age distribution</canvas></div>
       </div>

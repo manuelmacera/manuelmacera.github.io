@@ -182,7 +182,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // groups / Income groups / Countries as <optgroup>s, in that order -- matches
   // the sort order the build script already wrote into meta.json.
   function populateSelectors() {
-    pinYear.innerHTML = META.years.map(y => `<option value="${y}">${y}</option>`).join('');
+    // Full year-by-year list is 151 entries -- too dense to be useful in a
+    // plain <select>. Show decades plus the WPP "last estimate" year (the
+    // boundary between historical data and the Medium-variant projection;
+    // everything after it is projected, not observed) instead.
+    const lastEstimate = META.last_estimate_year;
+    const yearSet = new Set(META.years.filter(y => y % 10 === 0));
+    if (lastEstimate) yearSet.add(lastEstimate);
+    const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
+    pinYear.innerHTML = sortedYears.map(y => `<option value="${y}">${y}${y === lastEstimate ? ' (latest estimate)' : ''}</option>`).join('');
     const byGroup = {};
     META.locations.forEach(loc => { (byGroup[loc.group] = byGroup[loc.group] || []).push(loc); });
     const optionHTML = loc => `<option value="${loc.id}">${loc.name}</option>`;
@@ -240,7 +248,30 @@ document.addEventListener('DOMContentLoaded', function () {
     $(`demo-${prefix}-empty`).style.display = isEmpty ? 'block' : 'none';
     document.getElementById(`demo-${prefix}Chart`).style.display = isEmpty ? 'none' : 'block';
     $(`demo-${prefix}-legend`).style.display = isEmpty ? 'none' : 'flex';
+    const downloadBtn = $(`demo-${prefix}-download`);
+    if (downloadBtn) downloadBtn.style.display = isEmpty ? 'none' : 'inline-block';
   }
+
+  // Chart.js canvases are transparent by default; composite onto an opaque
+  // background matching the site's card color so the downloaded PNG doesn't
+  // go illegible if opened against a dark background.
+  function downloadChartPNG(canvasId, filename) {
+    const source = document.getElementById(canvasId);
+    const out = document.createElement('canvas');
+    out.width = source.width;
+    out.height = source.height;
+    const ctx = out.getContext('2d');
+    ctx.fillStyle = '#fffdf9';
+    ctx.fillRect(0, 0, out.width, out.height);
+    ctx.drawImage(source, 0, 0);
+    const link = document.createElement('a');
+    link.href = out.toDataURL('image/png');
+    link.download = filename;
+    link.click();
+  }
+  document.querySelectorAll('.demo-download').forEach(btn => {
+    btn.addEventListener('click', () => downloadChartPNG(btn.dataset.canvas, btn.dataset.filename));
+  });
 
   function statsTableHTML(rows) {
     return '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>'
@@ -330,6 +361,10 @@ document.addEventListener('DOMContentLoaded', function () {
   fetch(`${DATA_BASE}/meta.json`).then(r => r.json()).then(m => {
     META = m;
     populateSelectors();
+    // Land on a page that already shows something, instead of an empty
+    // "add a country" state: pin World at the latest estimate year.
+    const world = META.locations.find(loc => loc.group === 'World');
+    if (world) pins.push({ locid: world.id, name: world.name, year: String(META.last_estimate_year || META.years[META.years.length - 1]) });
     renderChips();
     renderAll();
   });

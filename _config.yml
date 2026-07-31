@@ -16,4 +16,5 @@ header_pages:
 plugins:
   - jekyll-feed
 
-# Not published yet — pushing to GitHub is a separate, later step.
+exclude:
+  - scripts/

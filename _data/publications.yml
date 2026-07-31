@@ -1,3 +1,20 @@
+- title: "Climate Inequality: Carbon Capture for Redistribution"
+  venue: Journal of Public Economic Theory, 2026
+  coauthors: with Elisa Belfiori (UTDT)
+  forthcoming: true
+  pdf: jpet_offsets_final.pdf
+  snapshot: jpet_offsets_final.png
+  doi: https://doi.org/10.1111/jpet.70134
+  bibtex: jpet_offsets_final.bib
+  abstract: >
+    We study optimal climate policy in a global economy where regions differ in wealth and
+    climate vulnerability. We provide an aggregation result: the model with heterogeneity can
+    be cast into a representative-region economy with a different discount factor and damage
+    function, giving a simple rule for accounting for inequality in climate policy design.
+    Wealthier regions should bear more responsibility for carbon capture, and inequality per se
+    does not require compromising the global emissions target. Carbon capture serves as a
+    natural redistribution mechanism precisely because lump-sum transfers are unavailable.
+
 - title: Optimal Climate Policy with Demographic Transitions
   venue: The Economic Journal, 2025
   coauthors: with Elisa Belfiori (UTDT)

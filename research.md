@@ -12,11 +12,12 @@ permalink: /research.html
     <summary>
       <span class="summary-row">
         <span class="paper-title">{{ paper.title }}</span>
+        {% if paper.forthcoming %}<span class="paper-badge">Forthcoming</span>{% endif %}
         <span class="paper-meta">{{ paper.venue }}{% if paper.venue.size > 0 and paper.coauthors.size > 0 %} &middot; {% endif %}{{ paper.coauthors }}</span>
       </span>
     </summary>
     <div class="paper-body">
-      <img class="paper-snapshot" src="{{ '/papers/snapshots/' | append: paper.snapshot | relative_url }}" alt="First page of the published version of {{ paper.title }}">
+      <img class="paper-snapshot" src="{{ '/papers/snapshots/' | append: paper.snapshot | relative_url }}" alt="First page of the {% if paper.forthcoming %}accepted{% else %}published{% endif %} version of {{ paper.title }}">
       <div class="paper-details">
         <p class="paper-abstract">{{ paper.abstract }}</p>
         <div class="paper-links">

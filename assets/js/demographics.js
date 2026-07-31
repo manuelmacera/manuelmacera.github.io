@@ -304,6 +304,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const legendFont = Math.round(12 * dpr);
     const legendLineH = Math.round(20 * dpr);
     const titleLineH = Math.round(titleFont * 1.3);
+    const watermarkFont = Math.round(10 * dpr);
+    const watermarkH = Math.round(20 * dpr);
 
     const scratch = document.createElement('canvas').getContext('2d');
     scratch.font = `bold ${titleFont}px Georgia, serif`;
@@ -313,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const out = document.createElement('canvas');
     out.width = source.width;
-    out.height = titleH + source.height + legendH;
+    out.height = titleH + source.height + legendH + watermarkH;
     const ctx = out.getContext('2d');
     ctx.fillStyle = '#fffdf9';
     ctx.fillRect(0, 0, out.width, out.height);
@@ -336,6 +338,13 @@ document.addEventListener('DOMContentLoaded', function () {
       ctx.fillText(item.text, pad + boxSize + 8, ly + (legendLineH - legendFont) / 2);
       ly += legendLineH;
     });
+
+    const wmY = titleH + source.height + legendH + watermarkH / 2;
+    ctx.fillStyle = '#b3ada0';
+    ctx.font = `italic ${watermarkFont}px -apple-system, Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('manuelmacera.github.io/demographics.html', out.width - pad, wmY);
 
     const link = document.createElement('a');
     link.href = out.toDataURL('image/png');

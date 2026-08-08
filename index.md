@@ -13,9 +13,6 @@ permalink: /
     <p class="hero-contact">
       <strong>Education:</strong> Ph.D. in Economics, University of Minnesota
     </p>
-    <p class="hero-contact">
-      <strong>Address:</strong> Universidad Torcuato Di Tella, Buenos Aires, Argentina
-    </p>
     <div class="hero-links">
       <a class="icon-link" href="mailto:manuelmacera@gmail.com">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 6-10 7L2 6"></path></svg>

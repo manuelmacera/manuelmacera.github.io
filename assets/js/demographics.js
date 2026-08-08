@@ -15,7 +15,7 @@ function loadLocation(locid) {
   return locationCache[locid];
 }
 
-const PIN_COLORS = ['#7a1f2b', '#c9973a', '#2c5f7c', '#3b6d11', '#6b3fa0', '#b6452c', '#1a7a6e'];
+const PIN_COLORS = ['#1a56db', '#c9973a', '#2c5f7c', '#3b6d11', '#6b3fa0', '#b6452c', '#1a7a6e'];
 const MAX_PINS = 7;
 const PROJECTION_END_YEAR = 2100;
 
@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', function () {
       Object.keys(pairs).forEach(tabId => {
         const isActive = tabId === active;
         panels[tabId].style.display = isActive ? 'block' : 'none';
-        buttons[tabId].style.background = isActive ? '#7a1f2b' : 'transparent';
+        buttons[tabId].style.background = isActive ? '#1a56db' : 'transparent';
         buttons[tabId].style.color = isActive ? '#fffdf9' : '#5f5e5a';
-        buttons[tabId].style.borderColor = isActive ? '#7a1f2b' : '#e6ddce';
+        buttons[tabId].style.borderColor = isActive ? '#1a56db' : '#e6ddce';
       });
       if (onShow) onShow(active);
     }

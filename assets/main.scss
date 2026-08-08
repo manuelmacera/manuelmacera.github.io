@@ -4,8 +4,8 @@
 @import "minima";
 
 :root {
-  --accent: #7a1f2b;
-  --accent-dark: #5c1620;
+  --accent: #1a56db;
+  --accent-dark: #123f9e;
   --gold: #c9973a;
   --cream: #faf6ef;
   --cream-panel: #fffdf9;
@@ -128,6 +128,33 @@ a:hover {
   flex-shrink: 0;
 }
 
+.hero-links {
+  display: flex;
+  gap: 0.8em;
+  margin-top: 1em;
+}
+
+.circle-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85em;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.circle-link:hover {
+  background-color: var(--accent);
+  color: var(--cream-panel);
+  text-decoration: none;
+}
+
 @media screen and (max-width: 600px) {
   .hero {
     flex-direction: column;
@@ -138,6 +165,10 @@ a:hover {
   .hero .headshot {
     width: 160px;
     height: 160px;
+  }
+
+  .hero-links {
+    justify-content: center;
   }
 }
 

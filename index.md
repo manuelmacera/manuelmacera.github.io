@@ -9,7 +9,10 @@ permalink: /
   <div class="hero-text">
     <h1>Manuel Macera</h1>
     <p class="hero-affiliation">Department of Economics, Universidad Torcuato Di Tella (UTDT)</p>
-    <p class="hero-bio">I am a macroeconomist working on inequality, demographic change, and climate policy. Ph.D. in Economics, University of Minnesota, 2013.</p>
+    <p class="hero-bio">I am a macroeconomist working on inequality, demographic change, and climate policy.</p>
+    <p class="hero-contact">
+      <strong>Education:</strong> Ph.D. in Economics, University of Minnesota
+    </p>
     <p class="hero-contact">
       <strong>Address:</strong> Universidad Torcuato Di Tella, Buenos Aires, Argentina
     </p>

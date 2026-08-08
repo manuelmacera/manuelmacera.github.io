@@ -26,7 +26,8 @@ h1, h2, h3, h4,
 
 .site-header {
   background-color: var(--cream-panel);
-  border-top: 4px solid var(--accent);
+  border-top: 8px solid var(--accent);
+  border-image: linear-gradient(90deg, var(--accent), var(--accent-dark)) 1;
   border-bottom: 1px solid var(--border);
 }
 
@@ -130,28 +131,26 @@ a:hover {
 
 .hero-links {
   display: flex;
-  gap: 0.8em;
+  gap: 1.5em;
   margin-top: 1em;
 }
 
-.circle-link {
+.icon-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
+  gap: 6px;
   color: var(--accent);
-  font-weight: 700;
-  font-size: 0.85em;
+  font-weight: 600;
+  font-size: 0.9em;
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  border-bottom: 1.5px solid var(--accent);
+  padding-bottom: 2px;
+  transition: color 0.15s ease, border-color 0.15s ease;
 }
 
-.circle-link:hover {
-  background-color: var(--accent);
-  color: var(--cream-panel);
+.icon-link:hover {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
   text-decoration: none;
 }
 

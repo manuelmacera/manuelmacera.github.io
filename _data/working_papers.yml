@@ -3,6 +3,7 @@
   coauthors: with Albert Marcet and Juan Pablo Nicolini
   pdf: policy_during_hypers.pdf
   snapshot: policy_during_hypers.png
+  bibtex: policy_during_hypers.bib
   abstract: >
     We perform policy analysis in a macroeconomic model in which agents do not have rational
     expectations, using hyperinflation episodes as a laboratory. We focus on policies that fix
@@ -23,6 +24,7 @@
   coauthors: with Albert Marcet and Juan Pablo Nicolini
   pdf: wp760.pdf
   snapshot: wp760.png
+  bibtex: wp760.bib
   abstract: >
     Following the sovereign debt crisis of 2012, some southern European countries debated
     proposals to leave the Euro. We evaluate this policy change in a standard monetary model
@@ -35,6 +37,7 @@
   coauthors: ""
   pdf: deleveraging.pdf
   snapshot: deleveraging.png
+  bibtex: deleveraging.bib
   abstract: >
     Private debt shrinks sharply after financial crises, but households' and firms' deleveraging
     have typically been studied in isolation. I study the aggregate effects of private

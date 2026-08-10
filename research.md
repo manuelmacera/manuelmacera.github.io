@@ -48,7 +48,10 @@ permalink: /research.html
         <img class="paper-snapshot" src="{{ '/papers/snapshots/' | append: paper.snapshot | relative_url }}" alt="First page of {{ paper.title }}">
         <div class="paper-details">
           <p class="paper-abstract">{{ paper.abstract }}</p>
-          <a class="paper-pdf-link" href="{{ '/papers/' | append: paper.pdf | relative_url }}">Download PDF</a>
+          <div class="paper-links">
+            <a class="paper-pdf-link" href="{{ '/papers/' | append: paper.pdf | relative_url }}">Download PDF</a>
+            {% if paper.bibtex %}<a class="paper-pdf-link" href="{{ '/papers/bibtex/' | append: paper.bibtex | relative_url }}" download>BibTeX</a>{% endif %}
+          </div>
         </div>
       {% endif %}
     </div>

@@ -1,3 +1,19 @@
+- title: "Born to Lose: The Politics and Fiscal Arithmetic of Argentine Social Security"
+  venue: ""
+  coauthors: with Andy Neumeyer
+  pdf: Born2Lose.pdf
+  snapshot: Born2Lose.png
+  bibtex: Born2Lose.bib
+  abstract: >
+    Argentina's fertility rate fell from 2.35 in 2015 to 1.5 in 2023, and the resulting aging
+    threatens SIPA, its pay-as-you-go pension system. We study SIPA's intergenerational
+    incidence, fiscal sustainability, and politics in an overlapping-generations model built on
+    current fertility and survival rates. Cohort welfare turns on one statistic: the present
+    value of retirement benefits per peso of contributions. A balanced budget returns 43 cents
+    to an entering worker today, versus 68 cents under the debt-financed status quo, which
+    exhausts its borrowing capacity by 2090. Since younger cohorts lose most from reform and
+    Argentina's median voter is 41, an aging electorate sustains the status quo.
+
 - title: Policy during Hyperinflations
   venue: ""
   coauthors: with Albert Marcet and Juan Pablo Nicolini

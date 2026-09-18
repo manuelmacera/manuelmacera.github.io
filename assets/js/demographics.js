@@ -111,7 +111,7 @@ function legendHTML(items) {
   return items.map(l => `<span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; border-radius:2px; background:${l.color};"></span>${l.text}</span>`).join('');
 }
 function statRow(name, color, s) {
-  return `<tr style="border-bottom:1px solid #e6ddce;"><td style="padding:6px 8px 6px 0; white-space:nowrap;"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:${color}; margin-right:5px;"></span>${name}</td>
+  return `<tr style="border-bottom:1px solid #e8e8e8;"><td style="padding:6px 8px 6px 0; white-space:nowrap;"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:${color}; margin-right:5px;"></span>${name}</td>
     <td style="padding:6px 8px; text-align:right;">${s.median}</td>
     <td style="padding:6px 0 6px 8px; text-align:right;">${s.youthDep.toFixed(2)}</td>
     <td style="padding:6px 0 6px 8px; text-align:right;">${s.oldDep.toFixed(2)}</td></tr>`;
@@ -148,8 +148,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const isActive = tabId === active;
         panels[tabId].style.display = isActive ? 'block' : 'none';
         buttons[tabId].style.background = isActive ? '#1a56db' : 'transparent';
-        buttons[tabId].style.color = isActive ? '#fffdf9' : '#5f5e5a';
-        buttons[tabId].style.borderColor = isActive ? '#1a56db' : '#e6ddce';
+        buttons[tabId].style.color = isActive ? '#ffffff' : '#5f5e5a';
+        buttons[tabId].style.borderColor = isActive ? '#1a56db' : '#e8e8e8';
       });
       if (onShow) onShow(active);
     }
@@ -175,9 +175,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function renderChips() {
     pinChips.innerHTML = pins.map((p, i) => `
-      <span style="display:inline-flex; align-items:center; gap:8px; background:${PIN_COLORS[i]}; color:#fffdf9; font-size:12px; font-weight:600; padding:6px 8px 6px 12px; border-radius:16px;">
+      <span style="display:inline-flex; align-items:center; gap:8px; background:${PIN_COLORS[i]}; color:#ffffff; font-size:12px; font-weight:600; padding:6px 8px 6px 12px; border-radius:16px;">
         ${p.name}, ${p.year}
-        <button type="button" data-idx="${i}" class="pin-remove" style="background:rgba(255,255,255,0.25); border:none; color:#fffdf9; width:18px; height:18px; border-radius:50%; cursor:pointer; font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center;">&times;</button>
+        <button type="button" data-idx="${i}" class="pin-remove" style="background:rgba(255,255,255,0.25); border:none; color:#ffffff; width:18px; height:18px; border-radius:50%; cursor:pointer; font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center;">&times;</button>
       </span>
     `).join('');
     pinChips.querySelectorAll('.pin-remove').forEach(btn => {
@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function () {
     out.width = source.width;
     out.height = titleH + source.height + legendH + watermarkH;
     const ctx = out.getContext('2d');
-    ctx.fillStyle = '#fffdf9';
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, out.width, out.height);
 
     let y = Math.round(pad / 2);
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   function statsTableHTML(rows) {
-    return '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e6ddce;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>'
+    return '<table style="width:100%; border-collapse:collapse;"><thead><tr style="color:#5f5e5a; font-size:11px; border-bottom:2px solid #e8e8e8;"><td style="padding-bottom:6px;"></td><td style="text-align:center; padding-bottom:6px;">Median age</td><td style="text-align:center; padding-bottom:6px;">Youth dependency ratio</td><td style="text-align:center; padding-bottom:6px;">Old-age dependency ratio</td></tr></thead><tbody>'
       + rows.join('')
       + '</tbody></table>'
       + '<p style="font-size:11px; color:#898781; margin:10px 0 0; line-height:1.6;">Median age: age below which half the (modeled) population falls.<br>Youth dependency ratio: population aged 0&ndash;14 divided by population aged 15&ndash;64.<br>Old-age dependency ratio: population aged 65+ divided by population aged 15&ndash;64.</p>';

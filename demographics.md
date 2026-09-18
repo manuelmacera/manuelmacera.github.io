@@ -9,7 +9,7 @@ permalink: /demographics.html
   <p>Explore every country, income group, development group, and the world as a whole, for every year from 1950 to 2100 (UN World Population Prospects, 2024 revision, medium variant). ASFR (age-specific fertility rate) and survival probability are the two primitives; pick up to seven country/year combinations to compare across all panels below.</p>
 </div>
 
-<div style="background:#fffdf9; border:1px solid #e6ddce; border-radius:8px; padding:12px 16px; margin:0 0 1rem; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
+<div style="background:#ffffff; border:1px solid #e8e8e8; border-radius:8px; padding:12px 16px; margin:0 0 1rem; display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end;">
   <div>
     <label style="font-size:13px; color:#5f5e5a; display:block; margin-bottom:4px;">Country / group</label>
     <select id="pin-country" style="min-width:220px;"></select>
@@ -18,7 +18,7 @@ permalink: /demographics.html
     <label style="font-size:13px; color:#5f5e5a; display:block; margin-bottom:4px;">Year</label>
     <select id="pin-year" style="min-width:100px;"></select>
   </div>
-  <button id="pin-add" type="button" style="font-size:13px; font-weight:600; padding:7px 16px; border-radius:6px; border:1px solid #1a56db; background:#1a56db; color:#fffdf9; cursor:pointer;">Add</button>
+  <button id="pin-add" type="button" style="font-size:13px; font-weight:600; padding:7px 16px; border-radius:6px; border:1px solid #1a56db; background:#1a56db; color:#ffffff; cursor:pointer;">Add</button>
   <span id="pin-limit-note" style="display:none; font-size:12px; color:#898781;">Remove one to add another (max 7)</span>
 </div>
 
@@ -31,7 +31,7 @@ permalink: /demographics.html
       <div style="position:relative; height:200px;"><canvas id="demo-asfrChart" role="img" aria-label="Age-specific fertility rate by age for each pinned country and year">ASFR by age</canvas></div>
     </div>
     <div id="demo-asfr-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
-    <button id="demo-asfr-download" type="button" class="demo-download" data-key="asfr" data-canvas="demo-asfrChart" data-filename="asfr-by-age.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e6ddce; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
+    <button id="demo-asfr-download" type="button" class="demo-download" data-key="asfr" data-canvas="demo-asfrChart" data-filename="asfr-by-age.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e8e8e8; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
     <p id="demo-asfr-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
   </div>
 
@@ -41,19 +41,19 @@ permalink: /demographics.html
       <div style="position:relative; height:200px;"><canvas id="demo-pxChart" role="img" aria-label="Survival probability by age for each pinned country and year">Survival probability by age</canvas></div>
     </div>
     <div id="demo-px-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
-    <button id="demo-px-download" type="button" class="demo-download" data-key="px" data-canvas="demo-pxChart" data-filename="survival-probability.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e6ddce; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
+    <button id="demo-px-download" type="button" class="demo-download" data-key="px" data-canvas="demo-pxChart" data-filename="survival-probability.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e8e8e8; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
     <p id="demo-px-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
   </div>
 </div>
 
-<hr style="border:none; border-top:1px solid #e6ddce; margin:2em 0;">
+<hr style="border:none; border-top:1px solid #e8e8e8; margin:2em 0;">
 
 <div style="display:flex; flex-wrap:wrap; gap:16px;">
   <div class="paper-card" style="padding:1em 1.3em; flex:2 1 420px;">
     <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
-      <button id="demo-tab-current" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #1a56db; background:#1a56db; color:#fffdf9; cursor:pointer;">Current age distribution</button>
-      <button id="demo-tab-stable" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Stable age distribution</button>
-      <button id="demo-tab-growth" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Growth rate over time</button>
+      <button id="demo-tab-current" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #1a56db; background:#1a56db; color:#ffffff; cursor:pointer;">Current age distribution</button>
+      <button id="demo-tab-stable" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e8e8e8; background:transparent; color:#5f5e5a; cursor:pointer;">Stable age distribution</button>
+      <button id="demo-tab-growth" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e8e8e8; background:transparent; color:#5f5e5a; cursor:pointer;">Growth rate over time</button>
     </div>
 
     <div id="demo-panel-current">
@@ -62,7 +62,7 @@ permalink: /demographics.html
         <div style="position:relative; height:260px;"><canvas id="demo-currentChart" role="img" aria-label="Current age distribution for each pinned country and year">Current age distribution</canvas></div>
       </div>
       <div id="demo-current-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
-      <button id="demo-current-download" type="button" class="demo-download" data-key="current" data-canvas="demo-currentChart" data-filename="current-age-distribution.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e6ddce; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
+      <button id="demo-current-download" type="button" class="demo-download" data-key="current" data-canvas="demo-currentChart" data-filename="current-age-distribution.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e8e8e8; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
       <p id="demo-current-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
     </div>
 
@@ -72,7 +72,7 @@ permalink: /demographics.html
         <div style="position:relative; height:260px;"><canvas id="demo-stableChart" role="img" aria-label="Implied stable age distribution for each pinned country and year">Stable age distribution</canvas></div>
       </div>
       <div id="demo-stable-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
-      <button id="demo-stable-download" type="button" class="demo-download" data-key="stable" data-canvas="demo-stableChart" data-filename="stable-age-distribution.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e6ddce; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
+      <button id="demo-stable-download" type="button" class="demo-download" data-key="stable" data-canvas="demo-stableChart" data-filename="stable-age-distribution.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e8e8e8; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
       <p id="demo-stable-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
     </div>
 
@@ -82,14 +82,14 @@ permalink: /demographics.html
         <div style="position:relative; height:260px;"><canvas id="demo-growthChart" role="img" aria-label="Projected population growth rate from each pinned year through 2100, converging toward the implied stable growth rate">Growth rate over time</canvas></div>
       </div>
       <div id="demo-growth-legend" style="display:flex; flex-wrap:wrap; gap:14px; font-size:11px; color:#5f5e5a; margin-top:8px;"></div>
-      <button id="demo-growth-download" type="button" class="demo-download" data-key="growth" data-canvas="demo-growthChart" data-filename="growth-rate.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e6ddce; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
+      <button id="demo-growth-download" type="button" class="demo-download" data-key="growth" data-canvas="demo-growthChart" data-filename="growth-rate.png" style="display:none; margin-top:8px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:5px; border:1px solid #e8e8e8; background:transparent; color:#1a56db; cursor:pointer;">Download PNG</button>
       <p id="demo-growth-empty" style="font-size:13px; color:#898781; text-align:center; margin:2em 0;">Add a country and year above to see data.</p>
     </div>
   </div>
   <div class="paper-card" style="padding:1em 1.3em; flex:1 1 260px;">
     <div style="display:flex; gap:8px; margin-bottom:10px;">
-      <button id="demo-stats-tab-current" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #1a56db; background:#1a56db; color:#fffdf9; cursor:pointer;">Current</button>
-      <button id="demo-stats-tab-stable" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e6ddce; background:transparent; color:#5f5e5a; cursor:pointer;">Stable</button>
+      <button id="demo-stats-tab-current" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #1a56db; background:#1a56db; color:#ffffff; cursor:pointer;">Current</button>
+      <button id="demo-stats-tab-stable" type="button" class="demo-tab" style="font-size:12px; font-weight:600; padding:5px 12px; border-radius:6px; border:1px solid #e8e8e8; background:transparent; color:#5f5e5a; cursor:pointer;">Stable</button>
     </div>
     <div id="demo-stats-current" style="font-size:12px;"></div>
     <div id="demo-stats-stable" style="font-size:12px; display:none;"></div>

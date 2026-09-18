@@ -7,9 +7,10 @@
   --accent: #1a56db;
   --accent-dark: #123f9e;
   --gold: #c9973a;
-  --cream: #faf6ef;
-  --cream-panel: #fffdf9;
-  --border: #e6ddce;
+  --cream: #ffffff;
+  --cream-panel: #ffffff;
+  --border: #e8e8e8;
+  --bg-accent: #eaf0fd;
 }
 
 $heading-font: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
@@ -26,8 +27,7 @@ h1, h2, h3, h4,
 
 .site-header {
   background-color: var(--cream-panel);
-  border-top: 8px solid var(--accent);
-  border-image: linear-gradient(90deg, var(--accent), var(--accent-dark)) 1;
+  border-top: none;
   border-bottom: 1px solid var(--border);
 }
 
@@ -75,18 +75,33 @@ a:hover {
   max-width: 720px;
 }
 
-/* Hero header on Home: white/cream card, red accent stripe + gold-framed
-   photo, instead of a solid color block */
+/* Hero header on Home: unboxed, flowing directly on the white page --
+   photo on the right with a soft accent block peeking out behind it,
+   instead of a bordered/boxed card */
 .hero {
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
-  gap: 2em;
-  background-color: var(--cream-panel);
-  border: 1px solid var(--border);
-  border-left: 6px solid var(--accent);
-  border-radius: 10px;
-  padding: 2em 2.5em;
-  margin-bottom: 2em;
+  gap: 3em;
+  padding: 3em 0;
+  margin-bottom: 1em;
+}
+
+.hero .headshot-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.hero .headshot-wrap::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  right: -18px;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-accent);
+  border-radius: 16px;
+  z-index: 0;
 }
 
 .hero h1 {
@@ -99,13 +114,25 @@ a:hover {
   margin: 0;
 }
 
+.hero .hero-eyebrow {
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6em;
+}
+
 .hero .hero-text h1 {
-  font-size: 2.2em;
-  margin-bottom: 0.2em;
+  font-size: 3.1em;
+  line-height: 1.1;
+  margin-bottom: 0.25em;
 }
 
 .hero .hero-affiliation {
-  margin-bottom: 1em;
+  font-size: 1.15em;
+  color: $grey-color-dark;
+  margin-bottom: 1.2em;
 }
 
 .hero .hero-bio {
@@ -118,52 +145,76 @@ a:hover {
 }
 
 .hero .headshot {
+  position: relative;
+  z-index: 1;
   float: none;
-  width: 220px;
-  height: 220px;
+  width: 260px;
+  height: 260px;
   object-fit: cover;
   object-position: center 20%;
   border-radius: 16px;
   margin: 0;
-  border: 3px solid var(--gold);
   flex-shrink: 0;
 }
 
 .hero-links {
   display: flex;
-  gap: 1.5em;
-  margin-top: 1em;
+  gap: 0.8em;
+  margin-top: 1.2em;
 }
 
-.icon-link {
+.btn-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent);
+  padding: 0.55em 1.3em;
+  border-radius: 999px;
   font-weight: 600;
   font-size: 0.9em;
   text-decoration: none;
-  border-bottom: 1.5px solid var(--accent);
-  padding-bottom: 2px;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  border: 1.5px solid var(--accent);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.icon-link:hover {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
+.btn-pill-solid {
+  background-color: var(--accent);
+  color: var(--cream-panel);
+}
+
+.btn-pill-solid:hover {
+  background-color: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: var(--cream-panel);
+  text-decoration: none;
+}
+
+.btn-pill-outline {
+  background-color: transparent;
+  color: var(--accent);
+}
+
+.btn-pill-outline:hover {
+  background-color: var(--accent);
+  color: var(--cream-panel);
   text-decoration: none;
 }
 
 @media screen and (max-width: 600px) {
   .hero {
-    flex-direction: column;
+    flex-direction: column-reverse;
     text-align: center;
-    gap: 1em;
+    gap: 1.5em;
+    padding: 2em 0;
   }
 
   .hero .headshot {
     width: 160px;
     height: 160px;
+  }
+
+  .hero .headshot-wrap::before {
+    top: -12px;
+    right: -12px;
   }
 
   .hero-links {

@@ -5,6 +5,9 @@
     problems, incomplete markets, uncertainty, inequality, and aggregate
     fluctuations.
   syllabus: null
+  slides:
+    - number: 1
+      file: ham/1a_heterogeneity_and_complete_markets.pdf
 
 - title: Economía 2
   level: undergraduate

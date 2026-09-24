@@ -321,6 +321,15 @@ a:hover {
   margin-top: 0.8em;
 }
 
+/* Same links, but one per line -- used on the Teaching page for
+   syllabus/slide-deck rows instead of the Research page's horizontal row */
+.course-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  margin-top: 0.8em;
+}
+
 .paper-pdf-link {
   font-weight: 600;
 }

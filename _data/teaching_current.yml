@@ -7,7 +7,11 @@
   syllabus: null
   slides:
     - number: 1
+      title: Heterogeneity with Complete Markets
       file: ham/1a_heterogeneity_and_complete_markets.pdf
+    - number: 2
+      title: Testing for Complete Markets
+      file: ham/1b_testing_for_complete_markets.pdf
 
 - title: Economía 2
   level: undergraduate

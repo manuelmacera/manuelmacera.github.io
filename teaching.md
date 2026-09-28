@@ -23,8 +23,6 @@ permalink: /teaching.html
         <div class="course-links">
           {% if course.syllabus %}
             <a class="paper-pdf-link" href="{{ '/syllabi/' | append: course.syllabus | relative_url }}">Download syllabus</a>
-          {% else %}
-            <p class="paper-broken">Syllabus not yet added</p>
           {% endif %}
           {% if course.slides %}
             {% for deck in course.slides %}

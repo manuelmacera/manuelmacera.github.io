@@ -12,7 +12,7 @@ permalink: /teaching.html
     <summary>
       <span class="summary-row">
         <span class="paper-title">{{ course.title }}</span>
-        <span class="paper-meta">{{ course.level }}</span>
+        <span class="paper-meta">({{ course.level | capitalize }})</span>
       </span>
     </summary>
     <div class="paper-body">

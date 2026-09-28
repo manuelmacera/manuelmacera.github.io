@@ -334,6 +334,15 @@ a:hover {
   font-weight: 600;
 }
 
+.ps-link {
+  font-weight: 600;
+  color: var(--terracotta);
+}
+
+.ps-link:hover {
+  color: var(--terracotta-dark);
+}
+
 .coming-soon {
   background-color: var(--cream-panel);
   border: 1px solid var(--border);

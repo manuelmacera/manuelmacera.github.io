@@ -12,6 +12,9 @@
     - number: "1.b"
       title: Testing for Complete Markets
       file: ham/1b_testing_for_complete_markets.pdf
+    - number: 2
+      title: The Income Fluctuation Problem
+      file: ham/2_income_fluctuation_problem.pdf
   problem_sets:
     - number: 1
       file: ham/ps1.pdf

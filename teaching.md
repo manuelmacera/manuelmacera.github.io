@@ -24,16 +24,13 @@ permalink: /teaching.html
           {% if course.syllabus %}
             <a class="paper-pdf-link" href="{{ '/syllabi/' | append: course.syllabus | relative_url }}">Download syllabus</a>
           {% endif %}
-          {% if course.slides %}
-            {% for deck in course.slides %}
-              <a class="paper-pdf-link" href="{{ '/courses/' | append: deck.file | relative_url }}">{{ deck.number }}: {{ deck.title }}</a>
-            {% endfor %}
-          {% endif %}
-          {% if course.problem_sets %}
-            {% for ps in course.problem_sets %}
-              <a class="ps-link" href="{{ '/courses/' | append: ps.file | relative_url }}">Problem Set {{ ps.number }}</a>
-            {% endfor %}
-          {% endif %}
+          {% for item in course.materials %}
+            {% if item.type == "problem_set" %}
+              <a class="ps-link" href="{{ '/courses/' | append: item.file | relative_url }}">Problem Set {{ item.number }}</a>
+            {% else %}
+              <a class="paper-pdf-link" href="{{ '/courses/' | append: item.file | relative_url }}">{{ item.number }}: {{ item.title }}</a>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>

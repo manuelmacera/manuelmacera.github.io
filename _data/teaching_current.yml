@@ -5,19 +5,22 @@
     problems, incomplete markets, uncertainty, inequality, and aggregate
     fluctuations.
   syllabus: null
-  slides:
-    - number: "1.a"
+  materials:
+    - type: slides
+      number: "1.a"
       title: Heterogeneity with Complete Markets
       file: ham/1a_heterogeneity_and_complete_markets.pdf
-    - number: "1.b"
+    - type: slides
+      number: "1.b"
       title: Testing for Complete Markets
       file: ham/1b_testing_for_complete_markets.pdf
-    - number: 2
+    - type: problem_set
+      number: 1
+      file: ham/ps1.pdf
+    - type: slides
+      number: 2
       title: The Income Fluctuation Problem
       file: ham/2_income_fluctuation_problem.pdf
-  problem_sets:
-    - number: 1
-      file: ham/ps1.pdf
 
 - title: Economía 2
   level: undergraduate

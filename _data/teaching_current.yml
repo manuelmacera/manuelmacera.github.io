@@ -21,6 +21,10 @@
       number: 2
       title: The Income Fluctuation Problem
       file: ham/2_income_fluctuation_problem.pdf
+    - type: slides
+      number: 3
+      title: The Standard Incomplete Markets Model
+      file: ham/3_standard_incomplete_markets_model.pdf
 
 - title: Economía 2
   level: undergraduate

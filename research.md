@@ -16,12 +16,12 @@ permalink: /research.html
       </span>
     </summary>
     <div class="paper-body">
-      <img class="paper-snapshot" src="{{ '/papers/snapshots/' | append: paper.snapshot | relative_url }}" alt="First page of the {% if paper.forthcoming %}accepted{% else %}published{% endif %} version of {{ paper.title }}">
+      <img class="paper-snapshot" src="{{ '/papers/snapshots/' | append: paper.snapshot | relative_url }}" alt="First page of {% unless paper.forthcoming %}the published version of {% endunless %}{{ paper.title }}">
       <div class="paper-details">
         <p class="paper-abstract">{{ paper.abstract }}</p>
         <div class="paper-links">
           <a class="paper-pdf-link" href="{{ '/papers/' | append: paper.pdf | relative_url }}">Working paper (PDF)</a>
-          <a class="paper-pdf-link" href="{{ paper.doi }}">Published version (DOI)</a>
+          {% if paper.doi %}<a class="paper-pdf-link" href="{{ paper.doi }}">Published version (DOI)</a>{% endif %}
           <a class="paper-pdf-link" href="{{ '/papers/bibtex/' | append: paper.bibtex | relative_url }}" download>BibTeX</a>
         </div>
       </div>

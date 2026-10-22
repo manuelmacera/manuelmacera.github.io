@@ -25,6 +25,9 @@
       number: 3
       title: The Standard Incomplete Markets Model
       file: ham/3_standard_incomplete_markets_model.pdf
+    - type: problem_set
+      number: 2
+      file: ham/ps2.pdf
     - type: slides
       number: "4.a"
       title: Transitional Dynamics and Welfare Evaluation

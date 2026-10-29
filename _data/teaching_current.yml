@@ -32,6 +32,14 @@
       number: "4.a"
       title: Transitional Dynamics and Welfare Evaluation
       file: ham/4a_transitional_dynamics_and_welfare.pdf
+    - type: slides
+      number: "4.b"
+      title: Aggregate Uncertainty
+      file: ham/4b_aggregate_uncertainty.pdf
+    - type: slides
+      number: "4.c"
+      title: "Aggregate Uncertainty: Accuracy and Linear Methods"
+      file: ham/4c_accuracy_and_linear_methods.pdf
 
 - title: Economía 2
   level: undergraduate

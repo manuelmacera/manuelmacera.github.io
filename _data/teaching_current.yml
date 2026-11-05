@@ -40,6 +40,10 @@
       number: "4.c"
       title: "Aggregate Uncertainty: Accuracy and Linear Methods"
       file: ham/4c_accuracy_and_linear_methods.pdf
+    - type: slides
+      number: 5
+      title: Constrained Efficiency with Incomplete Markets
+      file: ham/5_constrained_efficiency.pdf
 
 - title: Economía 2
   level: undergraduate

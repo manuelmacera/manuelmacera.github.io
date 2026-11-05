@@ -44,6 +44,10 @@
       number: 5
       title: Constrained Efficiency with Incomplete Markets
       file: ham/5_constrained_efficiency.pdf
+    - type: slides
+      number: 6
+      title: Heterogeneity and the Price Level
+      file: ham/6_heterogeneity_and_the_price_level.pdf
 
 - title: Economía 2
   level: undergraduate

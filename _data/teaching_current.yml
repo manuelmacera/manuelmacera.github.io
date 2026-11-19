@@ -51,6 +51,10 @@
       number: 6
       title: Heterogeneity and the Price Level
       file: ham/6_heterogeneity_and_the_price_level.pdf
+    - type: slides
+      number: 7
+      title: Heterogeneity and Fiscal Stimulus
+      file: ham/7_heterogeneity_and_fiscal_stimulus.pdf
 
 - title: Economía 2
   level: undergraduate
